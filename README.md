@@ -4,9 +4,15 @@ Why another git client. I was not satisfied with any git gui client available, s
 
 ## Installation
 
+No installation possible
+
 ## Usage
 
+No usage
+
 ## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
 

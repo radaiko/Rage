@@ -2,25 +2,42 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Reactive;
 using git_pain.Models;
+using git_pain.Services;
+using ReactiveUI;
 
 namespace git_pain.ViewModels
 {
-    public class RepoListViewModel : ViewModelBase
-    {
+    public class MainViewModel : ViewModelBase {
+        private Config config {get;}
+
+
+        public IReadOnlyList<MenuItemViewModel> MenuItems { get; set; }
         public ObservableCollection<Repo> Repos { get; }
-        public IEnumerable<string> repoSearchPaths {get; set;}
+        public ReactiveCommand<Unit, Unit> ConfigCommand { get; }
 
-
-        public RepoListViewModel(IEnumerable<string> paths)
+        public MainViewModel()
         {
             Repos = new ObservableCollection<Repo>();
-            repoSearchPaths = paths;
-            
+
+            this.config = new Config();
+            ConfigCommand = ReactiveCommand.Create(OpenConfig);
         }
 
+        public void OpenConfig()
+        {
+            System.Diagnostics.Debug.WriteLine("OpenConfig");
+        }
+
+
+        #region repo scanning
+
         private void ScanRepos(){
-            foreach (var path in repoSearchPaths)
+            if(config.GetSearchFolders() == null){
+                return;
+            }
+            foreach (var path in config.GetSearchFolders())
             {
                 SearchDirectoryForRepo(path);
             }
@@ -58,5 +75,7 @@ namespace git_pain.ViewModels
             }
             return false;
         }
+        #endregion
     }
+    
 }

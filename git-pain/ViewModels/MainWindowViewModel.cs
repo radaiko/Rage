@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
+using System.Reactive;
 using System.Text;
+using git_pain.Models;
+using git_pain.Services;
+using ReactiveUI;
 
 namespace git_pain.ViewModels
 {
     
     public class MainWindowViewModel : ViewModelBase
     {
-
-        public string debugRepoPath1 = @"/home/radaiko/Documents/Coding/";
-
-        public RepoListViewModel List {get;}
+        public MainViewModel MainViewItem { get; }
 
         public MainWindowViewModel()
         {
-            List = new RepoListViewModel(new string[]{debugRepoPath1});
+            MainViewItem = new MainViewModel();
+            
         }
-        
     }
 }

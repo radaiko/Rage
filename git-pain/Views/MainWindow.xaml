@@ -8,6 +8,5 @@
         x:Class="git_pain.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Git Pain"
-        Content="{Binding List}">
-
+        Content="{Binding MainViewItem}">
 </Window>

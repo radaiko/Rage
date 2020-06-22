@@ -12,23 +12,17 @@ namespace git_pain.ViewModels
     public class MainViewModel : ViewModelBase {
         private Config config {get;}
 
-
-        public IReadOnlyList<MenuItemViewModel> MenuItems { get; set; }
         public ObservableCollection<Repo> Repos { get; }
-        public ReactiveCommand<Unit, Unit> ConfigCommand { get; }
 
         public MainViewModel()
         {
             Repos = new ObservableCollection<Repo>();
 
             this.config = new Config();
-            ConfigCommand = ReactiveCommand.Create(OpenConfig);
+
         }
 
-        public void OpenConfig()
-        {
-            System.Diagnostics.Debug.WriteLine("OpenConfig");
-        }
+ 
 
 
         #region repo scanning

@@ -3,19 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="git_pain.Views.MainView">
-    <Grid RowDefinitions="Auto,Auto,*,140" ColumnDefinitions="Auto,*,220">
-          <Menu Items="{Binding MenuItems}" Grid.Row="0">
-              <Menu.Styles>
-                  <Style Selector="MenuItem">
-                      <Setter Property="Header" Value="{Binding Header}"/>
-                      <Setter Property="Items" Value="{Binding Items}"/>
-                      <Setter Property="Command" Value="{Binding Command}"/>
-                      <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
-                  </Style>
-              </Menu.Styles>
-          </Menu>
-          <Grid ColumnDefinitions="Auto,*,Auto" Grid.Row="1">
+             x:Class="git_pain.Views.MainView" Background="#1C1E23" Foreground="#D2D3D3">
+        <Grid ColumnDefinitions="100,*,Auto" Grid.Row="1">
               <DockPanel Grid.Column="0">
                   <Button DockPanel.Dock="Top" Command="{Binding ScanRepos}">Scan</Button>
                   <ItemsControl Items="{Binding Repos}">
@@ -28,7 +17,5 @@
                   </ItemsControl.ItemTemplate>
                   </ItemsControl>
               </DockPanel>
-              <TextBox Grid.Column="1">Hello</TextBox>
           </Grid>
-      </Grid>
 </UserControl>

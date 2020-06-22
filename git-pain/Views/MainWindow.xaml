@@ -7,6 +7,11 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="git_pain.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Git Pain"
-        Content="{Binding MainViewItem}">
+        Title="Git Pain">
+        <Grid RowDefinitions="20,50,*,20" ColumnDefinitions="*">
+                <views:MenuView Grid.Row="0" IsVisible="True" DataContext="{Binding MenuViewModel}"/>
+                <views:TopView Grid.Row="1" IsVisible="{Binding $parent[2].DataContext.ShowTopPanel}" DataContext="{Binding TopViewModel}"/>
+                <views:MainView Grid.Row="2" DataContext="{Binding MainViewModel}"/>
+                <views:BottomView Grid.Row="3" IsVisible="{Binding $parent[2].DataContext.ShowBottomPanel}" DataContext="{Binding BottomViewModel}"/>
+        </Grid>
 </Window>

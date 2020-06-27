@@ -18,4 +18,8 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.9.9" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.9" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Rage.Models/Rage.Models.csproj" />
+    <ProjectReference Include="../Rage.ViewModels/Rage.ViewModels.csproj" />
+  </ItemGroup>
 </Project>

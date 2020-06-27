@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="git_pain.Views.MenuView">
+  <DockPanel Background="#303030">
+        <Menu DockPanel.Dock="Top">
+        <Menu.Styles>
+                <Style Selector="MenuItem">
+                    <Setter Property="Foreground" Value="#CCCCCC" />
+                    <Setter Property="Background" Value="#303030" />
+                </Style>
+            </Menu.Styles>
+            <MenuItem Header="_File">
+                <MenuItem Header="_New Tab"/>
+                <Separator/>
+                <MenuItem Header="Clone Repo"/>
+                <MenuItem Header="Init Repo"/>
+                <MenuItem Header="Open Repo"/>
+                <MenuItem Header="Open Repo in Editor"/>
+                <Separator/>
+                <MenuItem Header="Terminal"/>
+                <MenuItem Header="Open Repo in File Manager"/>
+                <Separator/>
+                <MenuItem Header="Preferences" Command="{Binding OpenSettings}"/>
+                <MenuItem Header=""/>
+                <MenuItem Header="_Exit" Command="{Binding CloseApp}"/>
+            </MenuItem>
+            <!--<MenuItem Header="_View">
+            </MenuItem>-->
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About"/>
+                <Separator/>
+                <MenuItem Header="Get Help"/>            
+            </MenuItem>
+        </Menu>
+    </DockPanel>
+</UserControl>

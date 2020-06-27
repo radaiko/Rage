@@ -3,15 +3,14 @@
         xmlns:vm="clr-namespace:git_pain.ViewModels;assembly=git_pain"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:git_pain.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="git_pain.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Git Pain">
-
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+        <Grid RowDefinitions="20,*,20" ColumnDefinitions="*">
+                <views:MenuView Grid.Row="0" IsVisible="True" DataContext="{Binding MenuViewModel}"/>
+                <views:MainView Grid.Row="1" DataContext="{Binding MainViewModel}"/>
+                <views:BottomView Grid.Row="2" IsVisible="{Binding $parent[2].DataContext.ShowBottomPanel}" DataContext="{Binding BottomViewModel}"/>
+        </Grid>
 </Window>

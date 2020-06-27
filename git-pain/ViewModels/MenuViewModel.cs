@@ -15,6 +15,7 @@ namespace git_pain.ViewModels
 
         public MenuViewModel()
         {
+            
         }
 
         private void OpenSettings(){

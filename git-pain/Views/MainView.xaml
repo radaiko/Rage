@@ -2,20 +2,97 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:git_pain.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="git_pain.Views.MainView" Background="#1C1E23" Foreground="#D2D3D3">
-        <Grid ColumnDefinitions="100,*,Auto" Grid.Row="1">
-              <DockPanel Grid.Column="0">
-                  <Button DockPanel.Dock="Top" Command="{Binding ScanRepos}">Scan</Button>
-                  <ItemsControl Items="{Binding Repos}">
-                      <ItemsControl.ItemTemplate>
-                          <DataTemplate>
-                      <CheckBox Margin="4"
-                                  IsChecked="{Binding isUpToDate}"
-                                  Content="{Binding FolderName}"/>
-                      </DataTemplate>
-                  </ItemsControl.ItemTemplate>
-                  </ItemsControl>
-              </DockPanel>
-          </Grid>
+
+    <Grid ColumnDefinitions="Auto,*">
+        <Grid Grid.Column="0" ColumnDefinitions="20,*" Name="ExpanderGrid">
+            <Grid Grid.Column="0" ZIndex="1000">            
+                <Button Content="Show Repos" VerticalAlignment="Center" Foreground="#D2D3D3" FontSize="12" Width="{Binding $parent[0].Bounds.Height}" Click="SwitchExpanderStatus" Command="{Binding SwitchStatusOverviewExpander}">
+                    <Button.RenderTransform>
+                        <RotateTransform Angle="-90" />
+                    </Button.RenderTransform>
+                </Button>
+            </Grid>
+            <Expander Name="OverviewExpander" Grid.Column="1" ExpandDirection="Right" IsExpanded="{Binding Path=IsOverviewExpanded, Mode=TwoWay}}" Margin="-25,0,0,0">
+                <Expander.Styles>
+                    <Style Selector="Expander">
+                        <Setter Property="Background" Value="#282C34"/>
+                    </Style>
+                </Expander.Styles>
+                <DockPanel>
+                    <Button DockPanel.Dock="Bottom" Command="{Binding ScanRepos}">ReScan</Button>
+                    <ItemsControl Items="{Binding Repos}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding OpenRepo}" CommandParameter="{Binding FolderName}" Content="{Binding FolderName}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DockPanel>
+            </Expander>
+        </Grid>
+
+
+
+        
+        <TabControl Grid.Column="1" SelectedIndex="{Binding SelectedTab}" Items="{Binding OpenRepos}">
+            <TabControl.Styles>
+                <Style Selector="TabControl">
+                    <Setter Property="Background" Value="#1C1E23"/>
+                </Style>
+                <Style Selector="TabControl WrapPanel">
+                    <Setter Property="Background" Value="#282C34"/>
+                </Style>
+
+                <Style Selector="TabItem">
+                    <Setter Property="FontSize" Value="12"/>
+                    <Setter Property="Height" Value="20"/>
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="Background" Value="#282C34"/>
+                    <Setter Property="Foreground" Value="#D2D3D3"/>
+                    <Setter Property="Margin" Value="0 0 0 0"/>
+                    <Setter Property="Padding" Value="10 0"/>
+                </Style>
+                <Style Selector="TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="#282C34"/>
+                </Style>
+
+                <Style Selector="TabItem:focus">
+                    <Setter Property="Foreground" Value="#D2D3D3"/>
+                    <Setter Property="Margin" Value="0 0 0 0"/>
+                    <Setter Property="Padding" Value="10 0"/>
+                </Style>
+                <Style Selector="TabItem:focus /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="#313640"/>
+                </Style>
+
+                <Style Selector="TabItem:selected">
+                    <Setter Property="Foreground" Value="#D2D3D3"/>
+                    <Setter Property="Margin" Value="0 0 0 0"/>
+                    <Setter Property="Padding" Value="10 0"/>
+                </Style>
+                <Style Selector="TabItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="#313640"/>
+                </Style>
+            </TabControl.Styles>
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="{Binding FolderName}" />
+                        </TabItem.Header>
+                    </TabItem>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical" Spacing="8">
+                        <TextBlock Text="{Binding FolderName}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    </Grid>
 </UserControl>

@@ -11,7 +11,7 @@ namespace git_pain.Services
         public IEnumerable<string> GetSearchFolders() {
             if (configModel.SearchRepoPaths == null)
             {
-                return new [] {@"/home/radaiko/Documents/Coding"};
+                return new [] {@"/home/radaiko/src"};
             }
             return configModel.SearchRepoPaths;
         }

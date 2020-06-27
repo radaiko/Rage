@@ -13,21 +13,40 @@ namespace git_pain.ViewModels
         private Config config {get;}
 
         public ObservableCollection<Repo> Repos { get; }
+        public ObservableCollection<Repo> OpenRepos { get; set; }
+        public bool IsOverviewExpanded { get; set; }
+        public int SelectedTab { get; set; }
 
         public MainViewModel()
         {
             Repos = new ObservableCollection<Repo>();
 
             this.config = new Config();
+            ScanRepos();
+            OpenRepos = Repos;
 
         }
 
- 
+        public void SwitchStatusOverviewExpander(){
+            if (IsOverviewExpanded)
+            {
+                IsOverviewExpanded = false;
+            } else
+            {
+                IsOverviewExpanded = true;
+            }
+
+        }
+
+        public void OpenRepo(){
+
+            //TODO create new Tab with content of repo folder
+        }
 
 
         #region repo scanning
 
-        private void ScanRepos(){
+        public void ScanRepos(){
             if(config.GetSearchFolders() == null){
                 return;
             }

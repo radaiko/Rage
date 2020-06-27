@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Rage.Views
+namespace Rage.Pages
 {
-    public class MenuView : UserControl
+    public class BottomPage : UserControl
     {
-        public MenuView()
+        public BottomPage()
         {
             InitializeComponent();
         }

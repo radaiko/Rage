@@ -1,14 +1,12 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Rage.ViewModels;
 
-namespace Rage.Views
+namespace Rage.Pages
 {
-    public class MainView : UserControl
+    public class MainPage : UserControl
     {
-        public MainView()
+        public MainPage()
         {
             InitializeComponent();
         }

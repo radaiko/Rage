@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:model="clr-namespace:Rage.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Rage.Views.MainView" Background="#1C1E23" Foreground="#D2D3D3">
+             x:Class="Rage.Pages.MainPage" Background="#1C1E23" Foreground="#D2D3D3">
 
     <Grid ColumnDefinitions="Auto,*">
         <Grid Grid.Column="0" ColumnDefinitions="15,*" Name="ExpanderGrid">         

@@ -6,13 +6,13 @@ using Rage.Services;
 
 namespace Rage.ViewModels
 {
-    public class MainViewModel : ViewModelBase {
+    public class MainPageViewModel : ViewModelBase {
         private Config config {get;}
 
         public ObservableCollection<Repo> Repos { get; }
         public ObservableCollection<Repo> OpenRepos { get; set; }
 
-        public MainViewModel()
+        public MainPageViewModel()
         {
             Repos = new ObservableCollection<Repo>();
             OpenRepos = new ObservableCollection<Repo>(); 

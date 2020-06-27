@@ -3,14 +3,14 @@
         xmlns:vm="clr-namespace:Rage.ViewModels;assembly=Rage"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:Rage.Views"
+        xmlns:pages="clr-namespace:Rage.Pages;assembly=Rage.Pages"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Rage.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Rage">
         <Grid RowDefinitions="20,*,20" ColumnDefinitions="*">
-                <views:MenuView Grid.Row="0" IsVisible="True" DataContext="{Binding MenuViewModel}"/>
-                <views:MainView Grid.Row="1" DataContext="{Binding MainViewModel}"/>
-                <views:BottomView Grid.Row="2" IsVisible="{Binding $parent[2].DataContext.ShowBottomPanel}" DataContext="{Binding BottomViewModel}"/>
+                <pages:MenuPage Grid.Row="0" IsVisible="True" DataContext="{Binding MenuPageViewModel}"/>
+                <pages:MainPage Grid.Row="1" DataContext="{Binding MainPageViewModel}"/>
+                <pages:BottomPage Grid.Row="2" IsVisible="{Binding $parent[2].DataContext.ShowBottomPanel}" DataContext="{Binding BottomPageViewModel}"/>
         </Grid>
 </Window>

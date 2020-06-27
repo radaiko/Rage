@@ -3,15 +3,15 @@
 
     public class MainWindowViewModel : ViewModelBase
     {
-        public MenuViewModel MenuViewModel { get;}
-        public MainViewModel MainViewModel { get; }
-        public BottomViewModel BottomViewModel {get; set;}
+        public MenuPageViewModel MenuPageViewModel { get;}
+        public MainPageViewModel MainPageViewModel { get; }
+        public BottomPageViewModel BottomPageViewModel {get; set;}
 
         public MainWindowViewModel()
         {
-            MenuViewModel = new MenuViewModel();
-            MainViewModel = new MainViewModel();
-            BottomViewModel = new BottomViewModel();
+            MenuPageViewModel = new MenuPageViewModel();
+            MainPageViewModel = new MainPageViewModel();
+            BottomPageViewModel = new BottomPageViewModel();
             
         }
     }

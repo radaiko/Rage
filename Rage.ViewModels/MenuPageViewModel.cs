@@ -10,10 +10,10 @@ using ReactiveUI;
 namespace Rage.ViewModels
 {
 
-    public class MenuViewModel : ViewModelBase
+    public class MenuPageViewModel : ViewModelBase
     {
 
-        public MenuViewModel()
+        public MenuPageViewModel()
         {
             
         }

@@ -21,5 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="../Rage.Models/Rage.Models.csproj" />
     <ProjectReference Include="../Rage.ViewModels/Rage.ViewModels.csproj" />
+    <ProjectReference Include="../Rage.Pages/Rage.Pages.csproj" />
   </ItemGroup>
 </Project>

@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
-using System.Reactive;
 using Rage.Models;
 using Rage.Services;
-using ReactiveUI;
 
 namespace Rage.ViewModels
 {

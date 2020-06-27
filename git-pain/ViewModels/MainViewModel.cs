@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reactive;
 using git_pain.Models;
@@ -14,33 +15,23 @@ namespace git_pain.ViewModels
 
         public ObservableCollection<Repo> Repos { get; }
         public ObservableCollection<Repo> OpenRepos { get; set; }
-        public bool IsOverviewExpanded { get; set; }
-        public int SelectedTab { get; set; }
 
         public MainViewModel()
         {
             Repos = new ObservableCollection<Repo>();
+            OpenRepos = new ObservableCollection<Repo>(); 
 
             this.config = new Config();
             ScanRepos();
-            OpenRepos = Repos;
 
         }
 
-        public void SwitchStatusOverviewExpander(){
-            if (IsOverviewExpanded)
-            {
-                IsOverviewExpanded = false;
-            } else
-            {
-                IsOverviewExpanded = true;
+
+        public void OpenRepo(Repo repo){
+            if (!OpenRepos.Contains(repo))
+            { 
+                OpenRepos.Add(repo);
             }
-
-        }
-
-        public void OpenRepo(){
-
-            //TODO create new Tab with content of repo folder
         }
 
 

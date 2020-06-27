@@ -11,18 +11,6 @@ namespace git_pain.Views
         public MainView()
         {
             InitializeComponent();
-
-            // var vm = new MainViewModel();
-
-            //     vm.MenuItems = new[]
-            //     {
-            //         new MenuItemViewModel
-            //         {
-            //            Header = "_Config...", Command = vm.ConfigCommand 
-            //         }
-            //     };
-
-            //     DataContext = vm;
         }
 
         private void InitializeComponent()

@@ -1,14 +1,12 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using git_pain.Services;
-using git_pain.ViewModels;
 
-namespace git_pain.Views
+namespace Rage.Views
 {
-    public class MainWindow : Window
+    public class MenuView : UserControl
     {
-        public MainWindow()
+        public MenuView()
         {
             InitializeComponent();
         }

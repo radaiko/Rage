@@ -4,9 +4,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using git_pain.ViewModels;
+using Rage.ViewModels;
 
-namespace git_pain
+namespace Rage
 {
     public class ViewLocator : IDataTemplate
     {

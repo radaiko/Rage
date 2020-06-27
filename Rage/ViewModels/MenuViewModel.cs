@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using git_pain.ViewModels;
+using Rage.ViewModels;
 using ReactiveUI;
 
-namespace git_pain.ViewModels
+namespace Rage.ViewModels
 {
 
     public class MenuViewModel : ViewModelBase

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace git_pain.ViewModels
+namespace Rage.ViewModels
 {
     public class MenuItemViewModel
 {

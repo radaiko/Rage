@@ -1,11 +1,11 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using git_pain.Services;
-using git_pain.ViewModels;
-using git_pain.Views;
+using Rage.Services;
+using Rage.ViewModels;
+using Rage.Views;
 
-namespace git_pain
+namespace Rage
 {
     public class App : Application
     {

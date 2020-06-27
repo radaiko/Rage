@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reactive;
-using git_pain.Models;
-using git_pain.Services;
+using Rage.Models;
+using Rage.Services;
 using ReactiveUI;
 
-namespace git_pain.ViewModels
+namespace Rage.ViewModels
 {
     public class MainViewModel : ViewModelBase {
         private Config config {get;}

@@ -1,4 +1,4 @@
-namespace git_pain.Models
+namespace Rage.Models
 {
     public class Repo{
         public string FullPath { get; set; }

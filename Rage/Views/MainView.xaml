@@ -2,9 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:model="clr-namespace:git_pain.Models"
+             xmlns:model="clr-namespace:Rage.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="git_pain.Views.MainView" Background="#1C1E23" Foreground="#D2D3D3">
+             x:Class="Rage.Views.MainView" Background="#1C1E23" Foreground="#D2D3D3">
 
     <Grid ColumnDefinitions="Auto,*">
         <Grid Grid.Column="0" ColumnDefinitions="15,*" Name="ExpanderGrid">         
@@ -70,7 +70,7 @@
                     <Setter Property="Margin" Value="0 0 0 0"/>
                     <Setter Property="Padding" Value="10 0"/>
                 </Style>
-                <Style Selector="TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter"><s></s>
+                <Style Selector="TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
                     <Setter Property="Background" Value="#282C34"/>
                 </Style>
 

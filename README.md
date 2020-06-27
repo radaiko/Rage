@@ -16,7 +16,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License
 
-[MIT](https://github.com/radaiko/git-pain/blob/master/LICENSE)
+[MIT](https://github.com/radaiko/Rage/blob/master/LICENSE)
 
 ### Todos
 

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using git_pain.Models;
+using Rage.Models;
 
-namespace git_pain.Services
+namespace Rage.Services
 {
     public class Config{
 

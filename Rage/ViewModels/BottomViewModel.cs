@@ -5,11 +5,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Reactive;
 using System.Text;
-using git_pain.Models;
-using git_pain.Services;
+using Rage.Models;
+using Rage.Services;
 using ReactiveUI;
 
-namespace git_pain.ViewModels
+namespace Rage.ViewModels
 {
     
     public class BottomViewModel : ViewModelBase

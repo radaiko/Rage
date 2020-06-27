@@ -2,9 +2,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using git_pain.ViewModels;
+using Rage.ViewModels;
 
-namespace git_pain.Views
+namespace Rage.Views
 {
     public class MainView : UserControl
     {

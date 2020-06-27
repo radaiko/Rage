@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace git_pain.Views
+namespace Rage.Views
 {
     public class BottomView : UserControl
     {

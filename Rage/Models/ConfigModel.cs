@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace git_pain.Models
+namespace Rage.Models
 {
     public class ConfigModel {
         public IEnumerable<string> SearchRepoPaths { get; set; }

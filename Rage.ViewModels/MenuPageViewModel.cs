@@ -1,11 +1,4 @@
 using System;
-using System.Reactive;
-using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using Rage.ViewModels;
-using ReactiveUI;
 
 namespace Rage.ViewModels
 {

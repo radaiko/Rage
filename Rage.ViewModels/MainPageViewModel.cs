@@ -5,22 +5,31 @@ using System.IO;
 using System.Linq;
 using Rage.Models;
 using Rage.Services;
+using ReactiveUI;
 
 namespace Rage.ViewModels
 {
     public class MainPageViewModel : ViewModelBase 
     {
-        private Config config {get;}
+        private int _selectedIndex;
 
-        public ObservableCollection<Repo> Repos { get; }
+        private Config config {get;}
+        public ObservableCollection<RepoSearchFolder> RepoSearchFolders { get; }
         public ObservableCollection<Repo> OpenRepos { get; set; }
-        public int SelectedIndex { get; set; }
+        public int SelectedIndex 
+        {
+            get => _selectedIndex;
+            set {
+                this.RaiseAndSetIfChanged(ref _selectedIndex, value);
+                this.ChangeRepoView();
+            } 
+        }
+        public RepoPageViewModel RepoPageViewModel {get; set;}
 
         public MainPageViewModel()
         {
-            Repos = new ObservableCollection<Repo>();
+            RepoSearchFolders = new ObservableCollection<RepoSearchFolder>();
             OpenRepos = new ObservableCollection<Repo>(); 
-            SelectedIndex = 1;
 
             this.config = new Config();
             Initialize();
@@ -53,11 +62,13 @@ namespace Rage.ViewModels
             }
             foreach (var path in config.GetSearchFolders())
             {
-                SearchDirectoryForRepo(path);
+                RepoSearchFolder repoSearchFolder = new RepoSearchFolder(Path.GetFileName(path));
+                SearchDirectoryForRepo(ref repoSearchFolder, path);
+                RepoSearchFolders.Add(repoSearchFolder);
             }
         }
 
-        private void SearchDirectoryForRepo(string folderPath){
+        private void SearchDirectoryForRepo(ref RepoSearchFolder repoSearchFolder ,string folderPath){
             
             var folders = Directory.GetDirectories(folderPath);
 
@@ -70,22 +81,26 @@ namespace Rage.ViewModels
                 repo.isUpToDate = true;
                 if (!CheckifRepoAlreadyExists(repo))
                 {
-                    Repos.Add(repo);
+                    repoSearchFolder.Repos.Add(repo);
                 }
             }
             foreach (var folder in folders)
             {
-                SearchDirectoryForRepo(folder);
+                SearchDirectoryForRepo(ref repoSearchFolder, folder);
             }
         }
 
         private bool CheckifRepoAlreadyExists(Repo newRepo){
-            foreach (var repo in Repos)
+            foreach (var repoSearchFolder in RepoSearchFolders)
             {
-                if (repo.FullPath == newRepo.FullPath)
+                foreach (var repo in repoSearchFolder.Repos)
                 {
-                    return true;
+                    if (repo.FullPath == newRepo.FullPath)
+                    {
+                        return true;
+                    }
                 }
+    
             }
             return false;
         }
@@ -98,13 +113,21 @@ namespace Rage.ViewModels
             var openFolderNames = config.GetOpenRepos();
             foreach (var openFolderName in openFolderNames)
             {
-                var tempRepo = Repos.FirstOrDefault(p => p.FolderName == openFolderName);
-                if (tempRepo != null)
+                foreach (var repoSearchFolder in RepoSearchFolders)
                 {
-                    OpenRepos.Add(tempRepo);
+                    var tempRepo = repoSearchFolder.Repos.FirstOrDefault(p => p.FolderName == openFolderName);
+                    if (tempRepo != null)
+                    {
+                        OpenRepos.Add(tempRepo);
+                    }
                 }
+
+                
             }
             //
+
+            // set Repo view
+            ChangeRepoView();
         }
         
         private void SaveOpenRepos(){
@@ -116,6 +139,15 @@ namespace Rage.ViewModels
             config.SetOpenRepos(folderNames);
         }
     
+        private void ChangeRepoView(){
+            if (SelectedIndex != -1)
+            {
+                RepoPageViewModel = null;
+                var newRepo = OpenRepos[SelectedIndex];
+                RepoPageViewModel = new RepoPageViewModel(newRepo);
+            }
+            
+        }
     }
     
 }

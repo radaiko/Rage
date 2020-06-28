@@ -12,6 +12,7 @@
       // If you have changed target frameworks, make sure to update the program path.
       "program": "${workspaceFolder}/Rage/bin/Debug/netcoreapp3.0/Rage.dll",
       "args": [],
+      "env": {},
       "cwd": "${workspaceFolder}/Rage",
       // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
       "console": "internalConsole",

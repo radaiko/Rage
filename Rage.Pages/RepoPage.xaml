@@ -4,21 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Rage.Pages.RepoPage" FontSize="10" Foreground="#ECECED">
-  <Grid RowDefinitions="50,*">
+  <Grid RowDefinitions="50,*" DataContext="{Binding Repo}">
     <DockPanel Grid.Row="0" HorizontalAlignment="Center" Background="#313641" Width="{Binding $parent[UserControl].Bounds.Width}" >
+      <TextBlock Text="{Binding FolderName}" />
       <TextBlock Text="Button Pull" />
       <TextBlock Text="Button Push" />
       <TextBlock Text="Button Branch" />
       <TextBlock Text="Button Stash" />
       <TextBlock Text="Button Pop" />
+      <TextBlock Text="{Binding FolderName}" />
     </DockPanel>
     <Grid Grid.Row="1" ColumnDefinitions="100,*,300">
       <StackPanel Grid.Column="0" Background="#33363F">
-        <Expander Name="ExpanderLocalBrancher">
+        <Expander Name="ExpanderLocalBrancher" IsExpanded="True">
           <Expander.Header>
             <DockPanel>
-              <TextBlock Text="LOCAL"/>
-              <TextBlock DockPanel.Dock="Right" Text="{Binding CountOfLocalBranches}"/>
+              <TextBlock DockPanel.Dock="Left" Text="LOCAL"/>
+              <TextBlock DockPanel.Dock="Right" Text="{Binding LocalBranches.Count}" FontSize="8"/>
             </DockPanel>
           </Expander.Header>
           <DockPanel>
@@ -31,7 +33,7 @@
                     <Setter Property="BorderThickness" Value="0" />
                 </Style>
             </DockPanel.Styles>
-            <ItemsControl Items="{Binding Repos}">
+            <ItemsControl Items="{Binding LocalBranches}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate>
                   <Button Command="{Binding $parent[UserControl].DataContext.SelectLocalBranch}" CommandParameter="{Binding}" Content="{Binding Name}"/>
@@ -40,11 +42,11 @@
             </ItemsControl>
           </DockPanel>
         </Expander>
-        <Expander Name="ExpanderRemoteBranchers">
+        <Expander Name="ExpanderRemoteBranchers" IsExpanded="True">
           <Expander.Header>
             <DockPanel>
-              <TextBlock Text="Remote"/>
-              <TextBlock DockPanel.Dock="Right" Text="{Binding CountOfRemoteBranches}"/>
+              <TextBlock DockPanel.Dock="Left" Text="Remote"/>
+              <TextBlock DockPanel.Dock="Right" Text="{Binding RemoteBranches.Count}" FontSize="8"/>
             </DockPanel>
           </Expander.Header>
           <DockPanel>
@@ -57,10 +59,10 @@
                     <Setter Property="BorderThickness" Value="0" />
                 </Style>
             </DockPanel.Styles>
-            <ItemsControl Items="{Binding Repos}">
+            <ItemsControl Items="{Binding RemoteBranches}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                  <Button Command="{Binding $parent[UserControl].DataContext.SelectLocalBranch}" CommandParameter="{Binding}" Content="{Binding Name}"/>
+                  <Button Command="{Binding $parent[UserControl].DataContext.SelectRemoteBranch}" CommandParameter="{Binding}" Content="{Binding Name}"/>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -119,7 +121,7 @@
           </DockPanel>
         </Expander>
       </StackPanel>
-      <TextBlock Grid.Column="1" Text="Fancy branch flow" HorizontalAlignment="Center" Background="#1C1E23" />
+      <TextBlock Grid.Column="1" Text="{Binding RepoGraphAsString}" HorizontalAlignment="Center" Background="#1C1E23" />
       <StackPanel Grid.Column="2" Background="#33363F">
         <TextBlock Text="Item 1" />
         <TextBlock Text="Item 2" />

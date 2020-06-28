@@ -3,9 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:pages="clr-namespace:Rage.Pages;assembly=Rage.Pages"
-             xmlns:model="clr-namespace:Rage.Models"
+             xmlns:models="clr-namespace:Rage.Models;assembly=Rage.Models"
+             xmlns:vm="clr-namespace:Rage.ViewModels;assembly=Rage.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Rage.Pages.MainPage" Background="#1C1E23" Foreground="#D2D3D3">
+
 
     <Grid ColumnDefinitions="Auto,*">
         <Grid Grid.Column="0" ColumnDefinitions="15,*" Name="ExpanderGrid">         
@@ -39,17 +41,85 @@
                         </Style>
                     </DockPanel.Styles>
                     <Button DockPanel.Dock="Bottom" Command="{Binding ScanRepos}">ReScan</Button>
-                    <ItemsControl Items="{Binding Repos}">
+
+                     <TreeView Items="{Binding RepoSearchFolders}" >
+                        <TreeView.DataTemplates>
+                            <TreeDataTemplate DataType="models:RepoSearchFolder" ItemsSource="{Binding Repos}">
+                                <TextBlock Foreground="#D2D3D3" Text="{Binding Name}" />
+                            </TreeDataTemplate>
+                            <DataTemplate DataType="models:Repo">
+                                <Button Command="{Binding $parent[UserControl].DataContext.OpenRepo}" CommandParameter="{Binding}" Content="{Binding FolderName}"/>
+                            </DataTemplate>    
+                        </TreeView.DataTemplates>
+                    </TreeView>
+                    <!-- <ItemsControl Items="{Binding Repos}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Button Command="{Binding $parent[UserControl].DataContext.OpenRepo}" CommandParameter="{Binding}" Content="{Binding FolderName}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    </ItemsControl> -->
                 </DockPanel>
             </Expander>
+        
         </Grid>
-        <TabControl Grid.Column="1" Name="RepoTabs" Items="{Binding OpenRepos}" SelectedIndex="{Binding SelectedIndex}">
+        <Grid Grid.Column="1" RowDefinitions="20,*">
+            <TabStrip Grid.Row="0" Name="RepoTabs" Items="{Binding OpenRepos}" SelectedIndex="{Binding SelectedIndex}">
+                <TabStrip.Styles>
+                    <Style Selector="TabStrip">
+                        <Setter Property="Background" Value="#1C1E23"/>
+                    </Style>
+                    <Style Selector="TabStrip WrapPanel">
+                        <Setter Property="Background" Value="#282C34"/>
+                    </Style>
+                    <Style Selector="TabStripItem">
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="Height" Value="20"/>
+                        <Setter Property="VerticalAlignment" Value="Top"/>
+                        <Setter Property="Background" Value="#282C34"/>
+                        <Setter Property="Foreground" Value="#D2D3D3"/>
+                        <Setter Property="Margin" Value="0 0 0 0"/>
+                        <Setter Property="Padding" Value="10 0" />
+                    </Style>
+                    <Style Selector="TabStripItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="#282C34"/>
+                    </Style>
+
+                    <Style Selector="TabStripItem:focus">
+                        <Setter Property="Foreground" Value="#D2D3D3"/>
+                        <Setter Property="Margin" Value="0 0 0 0"/>
+                        <Setter Property="Padding" Value="10 0"/>
+                    </Style>
+                    <Style Selector="TabStripItem:focus /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="#313640"/>
+                    </Style>
+
+                    <Style Selector="TabStripItem:selected">
+                        <Setter Property="Foreground" Value="#D2D3D3"/>
+                        <Setter Property="Margin" Value="0 0 0 0"/>
+                        <Setter Property="Padding" Value="10 0"/>
+                    </Style>
+                    <Style Selector="TabStripItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="#313640"/>
+                    </Style>
+                </TabStrip.Styles>
+                <TabStrip.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding FolderName}" />
+                            <Button Background="{Binding $parent.Background}" FontSize="8" BorderThickness="0" Foreground="{Binding $parent[TabStripItem].Foreground}" 
+                                    Command="{Binding $parent[UserControl].DataContext.CloseRepo}" CommandParameter="{Binding}>" Padding="10 0 0 0">
+                                    X
+                                </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </TabStrip.ItemTemplate>
+            </TabStrip>
+            <ContentControl Grid.Row="1" Content="{Binding RepoPageViewModel}" />
+        </Grid>
+
+
+        <!-- <TabControl Grid.Column="1" Name="RepoTabs" Items="{Binding OpenRepos}" SelectedIndex="{Binding SelectedIndex}">
             <TabControl.Styles>
                 <Style Selector="TabControl">
                     <Setter Property="Background" Value="#1C1E23"/>
@@ -106,9 +176,9 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <pages:RepoPage/>
+                    <pages:RepoPage Repo="{Binding}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
-        </TabControl>
+        </TabControl> -->
     </Grid>
 </UserControl>

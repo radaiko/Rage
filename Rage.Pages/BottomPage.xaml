@@ -6,9 +6,9 @@
              x:Class="Rage.Pages.BottomPage" Background="#33363E" Foreground="#CCCCCC" FontSize="10">
   <Grid ColumnDefinitions="Auto,*,50">
     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-    <Border Background="#44474F" CornerRadius="3" Padding="2">
-      <TextBlock DockPanel.Dock="Right">v0.0.1</TextBlock>
-    </Border>
+      <Border Background="#44474F" CornerRadius="3" Padding="2">
+        <TextBlock DockPanel.Dock="Right">v0.0.1</TextBlock>
+      </Border>
     </StackPanel>
 
   </Grid>

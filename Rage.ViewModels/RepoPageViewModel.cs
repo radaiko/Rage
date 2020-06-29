@@ -11,6 +11,8 @@ namespace Rage.ViewModels
     {
         private GitHandler gitHandler;
         public Repo Repo { get; set;}
+        public string CommitSummary { get; set; }
+        public string CommitMessage { get; set; }
 
         public RepoPageViewModel(Repo repo)
         {
@@ -24,6 +26,16 @@ namespace Rage.ViewModels
         private void SelectLocalBranch(){
             Debugger.Break();
         }
+
+        private void StageFile(string fileName) {
+            Repo.StagedFiles.Add(fileName);
+            Repo.UnstagesFiles.Remove(fileName);
+        }
+        private void OnCommit(){
+            // TODO: add files and commit
+            // TODO: add option for auto push
+            //gitHandler.Commit();
+        }
         #endregion
 
 
@@ -36,12 +48,19 @@ namespace Rage.ViewModels
 
             // Get tags
             // TODO: read tags
-            //
 
-            // get graph
+            // Get changed files
+            Repo.UnstagesFiles = UpdateUnstagedFiles();
+
+
+            // Get graph
             Repo.RepoGraphAsString = gitHandler.GetGraphAsString();
 
             
+        }
+
+        private ObservableCollection<string> UpdateUnstagedFiles(){
+            return gitHandler.GetUnstagedFiles();
         }
     }
 }

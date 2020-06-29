@@ -98,7 +98,7 @@
           <Expander.Header>
             <DockPanel>
               <TextBlock Text="TAGS"/>
-              <TextBlock DockPanel.Dock="Right" Text="{Binding CounfOfTags}"/>
+              <TextBlock DockPanel.Dock="Right" Text="{Binding Tags.Count}"/>
             </DockPanel>
           </Expander.Header>
           <DockPanel>
@@ -111,22 +111,73 @@
                     <Setter Property="BorderThickness" Value="0" />
                 </Style>
             </DockPanel.Styles>
-            <ItemsControl Items="{Binding Repos}">
+            <ItemsControl Items="{Binding Tags}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                  <Button Command="{Binding $parent[UserControl].DataContext.SelectLocalBranch}" CommandParameter="{Binding}" Content="{Binding Name}"/>
+                  <Button Command="{Binding $parent[UserControl].DataContext.SelectTags}" CommandParameter="{Binding}" Content="{Binding Name}"/>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>
           </DockPanel>
         </Expander>
       </StackPanel>
-      <TextBlock Grid.Column="1" Text="{Binding RepoGraphAsString}" HorizontalAlignment="Center" Background="#1C1E23" />
+      <TextBlock Grid.Column="1" Text="{Binding RepoGraphAsString}" HorizontalAlignment="Stretch" TextAlignment="Left" Background="#1C1E23" />
       <StackPanel Grid.Column="2" Background="#33363F">
-        <TextBlock Text="Item 1" />
-        <TextBlock Text="Item 2" />
-        <TextBlock Text="Item 3" />
-        <TextBlock Text="Item 4" />
+        <Expander IsExpanded="True">
+          <Expander.Header>
+            <TextBlock Text="{Binding Path=UnstagesFiles.Count, StringFormat='Unstaged Files: {0}'}" Foreground="#D2D3D3" Width="{Binding $parent[0].Bounds.Width}" />
+          </Expander.Header>
+           <ItemsControl Items="{Binding UnstagesFiles}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <StackPanel Orientation="Horizontal">
+                        <Button Content="{Binding}"
+                                Command="{Binding $parent[UserControl].DataContext.SelectUnstagesFiles}"
+                                CommandParameter="{Binding}"
+                                Margin="2,5"/>
+                        <Border BorderBrush="#D2D3D3" BorderThickness="0.2" CornerRadius="4">
+                          <Button DockPanel.Dock="Right"
+                                  Content="Stage"
+                                  Command="{Binding $parent[UserControl].DataContext.StageFile}"
+                                  CommandParameter="{Binding}"
+                                  Margin="2,5"/>
+                        </Border>
+                      </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Expander>
+        <Expander IsExpanded="True">
+          <Expander.Header>
+            <TextBlock Text="{Binding Path=StagedFiles.Count, StringFormat='Staged Files: {0}'}" Foreground="#D2D3D3" Width="{Binding $parent[0].Bounds.Width}" />
+          </Expander.Header>
+           <ItemsControl Items="{Binding StagedFiles}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <StackPanel Orientation="Horizontal">
+                        <Button Content="{Binding}"
+                                Command="{Binding $parent[UserControl].DataContext.SelectStagesFiles}"
+                                CommandParameter="{Binding}"
+                                Margin="2,5"/>
+                        <Border BorderBrush="#D2D3D3" BorderThickness="0.2" CornerRadius="4">
+                          <Button DockPanel.Dock="Right"
+                                  Content="Stage"
+                                  Command="{Binding $parent[UserControl].DataContext.UnStageFile}"
+                                  CommandParameter="{Binding}"
+                                  Margin="2,5"/>
+                        </Border>
+                      </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Expander> 
+        <Expander Header="Commit Message" IsExpanded="True">
+          <StackPanel  Orientation="Vertical">
+            <TextBox Watermark="Summary" Text="{Binding $parent[UserControl].DataContext.CommitSummary}" Background="#272A31"></TextBox>
+            <TextBox Watermark="Description" Text="{Binding $parent[UserControl].DataContext.CommitMessage}" Background="#272A31" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+            <Button Content="Commit" Command="{Binding $parent[UserControl].DataContext.OnCommit}" />
+          </StackPanel>
+        </Expander> 
       </StackPanel>
     </Grid>
   </Grid>

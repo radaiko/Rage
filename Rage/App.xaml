@@ -7,7 +7,8 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
+        <StyleInclude Source="avares://Avalonia.Themes.Fluent/FluentTheme.xaml"/>
+        <!-- <StyleInclude Source="avares://Avalonia.Themes.Fluent/Accents/FluentDark.xaml"/> -->
+        <!-- <StyleInclude Source="resm:Rage.Themes.RageDark.xaml?assembly=Rage"/> -->
     </Application.Styles>
 </Application>

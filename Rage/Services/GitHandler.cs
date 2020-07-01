@@ -19,6 +19,7 @@ namespace Rage.Services
         private string gitCommit = "commit";
         private string gitCheckout = "checkout";
         private string gitShow = "show";
+        private string gitStatus = "status";
         private string gitFetch = "fetch";  // Downloads all history from the remote tracking branches
         private string gitMerge = "merge";  // Combines remote tracking branches into current local branch
                                             // [branch-name] Combines the specified branch’s history into the current branch. This is usually done in pull requests, but is an important Git operation.
@@ -63,23 +64,15 @@ namespace Rage.Services
             return LogGraph();
         }
 
-        public ObservableCollection<string> GetUnstagedFiles(){
-            ObservableCollection<string> unstagedFiles = new ObservableCollection<string>();
-            var changedFiles = ListChangedFiles();
-            var newFiles = ListNewFile();
-            foreach (var changedFile in changedFiles)
-            {
-                unstagedFiles.Add(changedFile);
-            }
-            foreach (var newFile in newFiles)
-            {
-                unstagedFiles.Add(newFile);
-            }
-            
+        public ObservableCollection<ChangedFile> GetUnstagedFiles(){
+            ObservableCollection<ChangedFile> unstagedFiles = ListChangedFiles();
 
             return unstagedFiles;
         }
 
+        public string GetDiffToLast(string filepath){
+            return DiffFile(filepath);
+        }
         #endregion
 
 
@@ -150,14 +143,49 @@ namespace Rage.Services
             return Utils.Utils.ExecutionProcess(gitCommand, gitLogWithGraphic, repoPath);
         }
 
-        private string[] ListChangedFiles(){
-            var returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitLsFiles + " -m --exclude-standard", repoPath);
-            return returnValue.Split("\n").Where(x => !string.IsNullOrEmpty(x)).ToArray();;
+        private ObservableCollection<ChangedFile> ListChangedFiles(){
+            ObservableCollection<ChangedFile> changedFiles = new ObservableCollection<ChangedFile>();
+            var files = Utils.Utils.ExecutionProcess(gitCommand, gitDiff + " --name-status", repoPath);
+            var lines = files.Split("\n").Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            List<string> returnArr = new List<string>();
+            foreach (var line in lines)
+            {
+                var indicator = line.Split("\t")[0];
+                var filename = line.Split("\t")[1];
+                switch (indicator)
+                {
+                    case "M":
+                    changedFiles.Add(new ChangedFile(){
+                        FileName = filename, 
+                        FullPath = repoPath + filename, 
+                        Status = Repo.FileStatus.Modified
+                    });
+                        break;
+                    case "D":
+                    changedFiles.Add(new ChangedFile(){
+                        FileName = filename, 
+                        FullPath = repoPath + filename, 
+                        Status = Repo.FileStatus.Deleted
+                    });
+                        break;
+                    case "??":
+                    changedFiles.Add(new ChangedFile(){
+                        FileName = filename, 
+                        FullPath = repoPath + filename, 
+                        Status = Repo.FileStatus.New
+                    });
+                        break;
+                    default:
+                        // log unknown type
+                        break;
+                }
+            }
+            return changedFiles;
         }
 
-        private string[] ListNewFile(){
-            var returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitLsFiles + " -o  --exclude-standard", repoPath);
-            return returnValue.Split("\n").Where(x => !string.IsNullOrEmpty(x)).ToArray();;
+        private string DiffFile(string filepath){
+            var returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitDiff + " " + filepath, repoPath);
+            return returnValue;
         }
 
         #endregion

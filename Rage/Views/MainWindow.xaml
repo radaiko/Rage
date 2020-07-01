@@ -1,10 +1,10 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:Rage.ViewModels;assembly=Rage.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:pages="clr-namespace:Rage.Pages;assembly=Rage.Pages"
-        xmlns:models="clr-namespace:Rage.Models;assembly=Rage.Models"
+        xmlns:pages="clr-namespace:Rage.Pages"
+        xmlns:models="clr-namespace:Rage.Models"
+        xmlns:vm="clr-namespace:Rage.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Rage.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -14,10 +14,7 @@
                 <DataTemplate DataType="{x:Type vm:RepoPageViewModel}">
                         <pages:RepoPage/>
                 </DataTemplate>
-        </Window.DataTemplates>
-        
-        
-
+        </Window.DataTemplates>  
 
         <Grid RowDefinitions="20,*,20" ColumnDefinitions="*">
                 <pages:MenuPage Grid.Row="0" IsVisible="True" DataContext="{Binding MenuPageViewModel}"/>

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Rage.Models;
 using Rage.Services;
+using ReactiveUI;
 
 namespace Rage.ViewModels
 {
@@ -10,9 +11,16 @@ namespace Rage.ViewModels
     public class RepoPageViewModel : ViewModelBase
     {
         private GitHandler gitHandler;
+        private ViewModelBase _middleSection;
+
         public Repo Repo { get; set;}
         public string CommitSummary { get; set; }
         public string CommitMessage { get; set; }
+        public ViewModelBase MiddleSection
+        {
+            get { return _middleSection; }
+            set { this.RaiseAndSetIfChanged(ref _middleSection, value); }
+        }
 
         public RepoPageViewModel(Repo repo)
         {
@@ -27,14 +35,18 @@ namespace Rage.ViewModels
             Debugger.Break();
         }
 
-        private void StageFile(string fileName) {
-            Repo.StagedFiles.Add(fileName);
-            Repo.UnstagesFiles.Remove(fileName);
+        private void StageFile(ChangedFile changedFile) {
+            Repo.StagedFiles.Add(changedFile);
+            Repo.UnstagesFiles.Remove(changedFile);
         }
         private void OnCommit(){
             // TODO: add files and commit
             // TODO: add option for auto push
             //gitHandler.Commit();
+        }
+
+        private void SelectFile(string filename){
+            MiddleSection = new DiffPageViewModel(gitHandler.GetDiffToLast(filename)); 
         }
         #endregion
 
@@ -55,11 +67,12 @@ namespace Rage.ViewModels
 
             // Get graph
             Repo.RepoGraphAsString = gitHandler.GetGraphAsString();
+            MiddleSection = new RepoGraphPageViewModel(Repo.RepoGraphAsString);
 
             
         }
 
-        private ObservableCollection<string> UpdateUnstagedFiles(){
+        private ObservableCollection<ChangedFile> UpdateUnstagedFiles(){
             return gitHandler.GetUnstagedFiles();
         }
     }

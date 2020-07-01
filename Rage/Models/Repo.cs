@@ -11,9 +11,17 @@ namespace Rage.Models
         public ObservableCollection<Branch> RemoteBranches { get; set; }
         public ObservableCollection<Tag> Tags { get; set; }
         public string RepoGraphAsString { get; set; }
-        public ObservableCollection<string> UnstagesFiles { get; set; }
-        public ObservableCollection<string> StagedFiles { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<ChangedFile> UnstagesFiles { get; set; }
+        public ObservableCollection<ChangedFile> StagedFiles { get; set; } = new ObservableCollection<ChangedFile>();
 
+
+        public enum FileStatus
+        {
+            Deleted,
+            Modified,
+            New,
+
+        }
     }
     
 }

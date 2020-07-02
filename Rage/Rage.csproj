@@ -14,8 +14,8 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="avalonia" Version="0.9.99-*" />
-    <PackageReference Include="avalonia.desktop" Version="0.9.99-*" />
-    <PackageReference Include="avalonia.reactiveui" Version="0.9.99-*" />
+    <PackageReference Include="avalonia" Version="0.9.*" />
+    <PackageReference Include="avalonia.desktop" Version="0.9.*" />
+    <PackageReference Include="avalonia.reactiveui" Version="0.9.*" />
   </ItemGroup>
 </Project>

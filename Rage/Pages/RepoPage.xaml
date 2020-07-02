@@ -16,6 +16,51 @@
       <pages:RepoGraphPage/>
     </DataTemplate>
   </UserControl.DataTemplates>
+  <UserControl.Styles>
+    <Style Selector="Button">
+      <!-- <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/> -->
+      <!-- <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}"/> -->
+      <Setter Property="FontSize" Value="10"/>
+      <Setter Property="Height" Value="15"/>
+      <Setter Property="Background" Value="#33363F"/>
+      <Setter Property="Foreground" Value="#D2D3D3"/>
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="0 0 0 0" />
+      <Setter Property="Margin" Value="10 0 10 0" />
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+    <Style Selector="Button:pointerover">
+      <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
+      <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}"/>
+    </Style>
+    <Style Selector="Button.Stage /template/ ContentPresenter">
+      <Setter Property="CornerRadius" Value="3"/>
+    </Style>
+    <Style Selector="Button#Commit">
+      <Setter Property="BorderBrush" Value="#49eb34"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Background" Value="#b7ffad"/>
+      <Setter Property="Foreground" Value="{DynamicResource ThemeBackgroundBrush}"/>
+      <Setter Property="IsEnabled" Value="False"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button#Commit /template/ ContentPresenter">
+      <Setter Property="CornerRadius" Value="2"/>
+    </Style>
+    <Style Selector="Button#Commit.active">
+      <Setter Property="IsEnabled" Value="True"/>
+    </Style>
+    <Style Selector="TextBox"> 
+      <Setter Property="Padding" Value="0 0 0 0" />
+      <Setter Property="Margin" Value="10 0 10 0" />
+      <Setter Property="FontSize" Value="10" />
+      <Setter Property="Height" Value="20" />
+    </Style>
+    <Style Selector="TextBox#CommitDescription"> 
+      <Setter Property="FontSize" Value="9" />
+      <Setter Property="Height" Value="50" />
+    </Style>
+  </UserControl.Styles>
 
   <Grid RowDefinitions="50,*" DataContext="{Binding Repo}">
     <DockPanel Grid.Row="0" HorizontalAlignment="Center" Background="#313641" Width="{Binding $parent[UserControl].Bounds.Width}" >
@@ -145,19 +190,17 @@
               <ItemsControl Items="{Binding UnstagesFiles}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                      <StackPanel Orientation="Horizontal">
+                      <Grid ColumnDefinitions="*,50">
                         <Button Content="{Binding FileName}"
                                 Command="{Binding $parent[UserControl].DataContext.SelectFile}"
                                 CommandParameter="{Binding}"
-                                Margin="2,5"/>
-                        <Border BorderBrush="#D2D3D3" BorderThickness="0.2" CornerRadius="4">
-                          <Button DockPanel.Dock="Right"
-                                  Content="Stage"
-                                  Command="{Binding $parent[UserControl].DataContext.StageFile}"
-                                  CommandParameter="{Binding}"
-                                  Margin="2,5"/>
-                        </Border>
-                      </StackPanel>
+                                Grid.Column="0"/>
+                        <Button Content="Stage"
+                                Command="{Binding $parent[UserControl].DataContext.StageFile}"
+                                CommandParameter="{Binding}"
+                                Classes="Stage"
+                                Grid.Column="1"/>
+                      </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -171,19 +214,17 @@
               <ItemsControl Items="{Binding StagedFiles}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                          <StackPanel Orientation="Horizontal">
+                          <Grid ColumnDefinitions="*,65">
                             <Button Content="{Binding FileName}"
                                     Command="{Binding $parent[UserControl].DataContext.SelectFile}"
                                     CommandParameter="{Binding}"
-                                    Margin="2,5"/>
-                            <Border BorderBrush="#D2D3D3" BorderThickness="0.2" CornerRadius="4">
-                              <Button DockPanel.Dock="Right"
-                                      Content="Stage"
-                                      Command="{Binding $parent[UserControl].DataContext.UnStageFile}"
-                                      CommandParameter="{Binding}"
-                                      Margin="2,5"/>
-                            </Border>
-                          </StackPanel>
+                                    Grid.Column="0"/>
+                            <Button Content="UnStage"
+                                    Command="{Binding $parent[UserControl].DataContext.UnStageFile}"
+                                    CommandParameter="{Binding}"
+                                    Classes="Stage"
+                                    Grid.Column="1"/>
+                          </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -191,9 +232,9 @@
         </Expander> 
         <Expander Header="Commit Message" IsExpanded="True">
           <StackPanel  Orientation="Vertical">
-            <TextBox Watermark="Summary" Text="{Binding $parent[UserControl].DataContext.CommitSummary}" Background="#272A31"></TextBox>
-            <TextBox Watermark="Description" Text="{Binding $parent[UserControl].DataContext.CommitMessage}" Background="#272A31" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
-            <Button Content="Commit" Command="{Binding $parent[UserControl].DataContext.OnCommit}" />
+            <TextBox Watermark="Summary" Text="{Binding $parent[UserControl].DataContext.CommitSummary}" Background="#272A31" Name="CommitSummary"></TextBox>
+            <TextBox Watermark="Description" Text="{Binding $parent[UserControl].DataContext.CommitMessage}" Background="#272A31" AcceptsReturn="True" TextWrapping="Wrap" Name="CommitDescription"></TextBox>
+            <Button Content="Commit" Command="{Binding $parent[UserControl].DataContext.OnCommit}" Name="Commit"/>
           </StackPanel>
         </Expander> 
       </StackPanel>

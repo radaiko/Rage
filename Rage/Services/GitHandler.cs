@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Rage.Models;
 using Rage.Utils;
@@ -28,7 +29,7 @@ namespace Rage.Services
         private string gitDiff = "diff";
         private string gitReset = "reset";  // Undoes all commits after [commit], preserving changes locally
                                             // --hard [commit] Discards all history and changes back to the specified commit
-
+                                            // -- unstage files
         private string gitLsFiles = "ls-files";
 
 
@@ -65,14 +66,45 @@ namespace Rage.Services
         }
 
         public ObservableCollection<ChangedFile> GetUnstagedFiles(){
-            ObservableCollection<ChangedFile> unstagedFiles = ListChangedFiles();
+            ObservableCollection<ChangedFile> unstagedFiles = ListUnstagedFiles();
 
             return unstagedFiles;
+        }
+
+        public ObservableCollection<ChangedFile> GetStagedFiles(){
+            ObservableCollection<ChangedFile> stagedFiles = ListStagedFiles();
+
+            return stagedFiles;
         }
 
         public string GetDiffToLast(string filepath){
             return DiffFile(filepath);
         }
+
+        public void StageFile(string filepath){
+            Stage(filepath);
+        }
+        public void UnstageFile(string filepath){
+            Unstage(filepath);
+        }
+
+        public void CommitChanges(List<string> filesToAdd, string commitSummary, string commitMessage)
+        {
+            // add files
+            foreach (var filepath in filesToAdd)
+            {
+                Stage(filepath);     
+            }
+            Commit(commitSummary, commitMessage);
+        }
+        
+        public void PushCommits()
+        {
+            Push();
+        }        
+
+
+
         #endregion
 
 
@@ -143,7 +175,7 @@ namespace Rage.Services
             return Utils.Utils.ExecutionProcess(gitCommand, gitLogWithGraphic, repoPath);
         }
 
-        private ObservableCollection<ChangedFile> ListChangedFiles(){
+        private ObservableCollection<ChangedFile> ListUnstagedFiles(){
             ObservableCollection<ChangedFile> changedFiles = new ObservableCollection<ChangedFile>();
             var files = Utils.Utils.ExecutionProcess(gitCommand, gitDiff + " --name-status", repoPath);
             var lines = files.Split("\n").Where(x => !string.IsNullOrEmpty(x)).ToArray();
@@ -157,21 +189,21 @@ namespace Rage.Services
                     case "M":
                     changedFiles.Add(new ChangedFile(){
                         FileName = filename, 
-                        FullPath = repoPath + filename, 
+                        FullPath = Path.Combine(repoPath, filename),
                         Status = Repo.FileStatus.Modified
                     });
                         break;
                     case "D":
                     changedFiles.Add(new ChangedFile(){
                         FileName = filename, 
-                        FullPath = repoPath + filename, 
+                        FullPath = Path.Combine(repoPath, filename), 
                         Status = Repo.FileStatus.Deleted
                     });
                         break;
                     case "??":
                     changedFiles.Add(new ChangedFile(){
                         FileName = filename, 
-                        FullPath = repoPath + filename, 
+                        FullPath = Path.Combine(repoPath, filename), 
                         Status = Repo.FileStatus.New
                     });
                         break;
@@ -183,11 +215,77 @@ namespace Rage.Services
             return changedFiles;
         }
 
+        private ObservableCollection<ChangedFile> ListStagedFiles(){
+            ObservableCollection<ChangedFile> changedFiles = new ObservableCollection<ChangedFile>();
+            var files = Utils.Utils.ExecutionProcess(gitCommand, gitDiff + "  --staged --name-status", repoPath);
+            var lines = files.Split("\n").Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            List<string> returnArr = new List<string>();
+            foreach (var line in lines)
+            {
+                var indicator = line.Split("\t")[0];
+                var filename = line.Split("\t")[1];
+                switch (indicator)
+                {
+                    case "M":
+                    changedFiles.Add(new ChangedFile(){
+                        FileName = filename, 
+                        FullPath = Path.Combine(repoPath, filename), 
+                        Status = Repo.FileStatus.Modified
+                    });
+                        break;
+                    case "D":
+                    changedFiles.Add(new ChangedFile(){
+                        FileName = filename, 
+                        FullPath = Path.Combine(repoPath, filename), 
+                        Status = Repo.FileStatus.Deleted
+                    });
+                        break;
+                    case "??":
+                    changedFiles.Add(new ChangedFile(){
+                        FileName = filename, 
+                        FullPath = Path.Combine(repoPath, filename), 
+                        Status = Repo.FileStatus.New
+                    });
+                        break;
+                    default:
+                        // log unknown type
+                        break;
+                }
+            }
+            return changedFiles;
+        }
         private string DiffFile(string filepath){
             var returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitDiff + " " + filepath, repoPath);
             return returnValue;
         }
 
+        private void Stage(string filepath){
+            var returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitAdd + " " + filepath, repoPath);
+            Console.WriteLine("Git Stage: " + returnValue);
+        }
+        
+        private void Unstage(string filepath){
+            var returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitReset + " -- " + filepath, repoPath);
+            Console.WriteLine("Git Unstage: " + returnValue);
+        }
+
+        private void Commit(string commitSummary, string commitMessage){
+            string returnValue;
+
+            if (commitMessage == "")
+            {                
+                returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitCommit + " -m \"" + commitSummary + "\"", repoPath);
+            } else
+            {
+                returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitCommit + " -m \"" + commitSummary + "\" -m \"" + commitMessage + "\"", repoPath);
+            }
+            Console.WriteLine("Git Commit: " + returnValue);
+        }
+
+        private void Push(){
+            var returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitPush, repoPath);
+            Console.WriteLine("Git Push: " + returnValue);
+        }
         #endregion
     }
 }

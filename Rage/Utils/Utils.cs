@@ -31,14 +31,14 @@ namespace Rage.Utils
         #region private
 
         private static string RunningCommand(string filename, string args, string workingDirectory){
-            var escapedArgs = args.Replace("\"", "\\\"");
+            //var escapedArgs = args.Replace("\"", "\\\"");
             
             var process = new Process()
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = filename,
-                    Arguments = escapedArgs,
+                    Arguments = args,
                     WorkingDirectory = workingDirectory,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,

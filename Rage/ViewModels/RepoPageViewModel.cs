@@ -37,12 +37,27 @@ namespace Rage.ViewModels
 
         private void StageFile(ChangedFile changedFile) {
             Repo.StagedFiles.Add(changedFile);
+            gitHandler.StageFile(changedFile.FullPath);
             Repo.UnstagesFiles.Remove(changedFile);
         }
+
+        private void UnStageFile(ChangedFile changedFile){
+            Repo.UnstagesFiles.Add(changedFile);
+            gitHandler.UnstageFile(changedFile.FullPath);
+            Repo.StagedFiles.Remove(changedFile);
+
+        }
         private void OnCommit(){
-            // TODO: add files and commit
-            // TODO: add option for auto push
-            //gitHandler.Commit();
+            List<string> filesToAdd = new List<string>();
+            if (Repo.StagedFiles.Count == 0)
+            {
+                foreach (var changeFile in Repo.UnstagesFiles)
+                {
+                    filesToAdd.Add(changeFile.FullPath);
+                }
+            }
+            gitHandler.CommitChanges(filesToAdd, CommitSummary, CommitMessage);
+            gitHandler.PushCommits();
         }
 
         private void SelectFile(string filename){
@@ -63,6 +78,7 @@ namespace Rage.ViewModels
 
             // Get changed files
             Repo.UnstagesFiles = UpdateUnstagedFiles();
+            Repo.StagedFiles = UpdateStagedFiles();
 
 
             // Get graph
@@ -74,6 +90,9 @@ namespace Rage.ViewModels
 
         private ObservableCollection<ChangedFile> UpdateUnstagedFiles(){
             return gitHandler.GetUnstagedFiles();
+        }
+        private ObservableCollection<ChangedFile> UpdateStagedFiles(){
+            return gitHandler.GetStagedFiles();
         }
     }
 }

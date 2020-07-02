@@ -58,6 +58,9 @@ namespace Rage.ViewModels
             }
             gitHandler.CommitChanges(filesToAdd, CommitSummary, CommitMessage);
             gitHandler.PushCommits();
+
+            // TODO: clean up interface.
+            // TODO: reread repo.
         }
 
         private void SelectFile(string filename){

@@ -14,12 +14,8 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.9" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.9" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.9" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="../Rage.Models/Rage.Models.csproj" />
-    <ProjectReference Include="../Rage.ViewModels/Rage.ViewModels.csproj" />
+    <PackageReference Include="avalonia" Version="0.9.*" />
+    <PackageReference Include="avalonia.desktop" Version="0.9.*" />
+    <PackageReference Include="avalonia.reactiveui" Version="0.9.*" />
   </ItemGroup>
 </Project>

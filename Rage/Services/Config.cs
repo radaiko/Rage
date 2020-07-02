@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using Rage.Models;
 
@@ -7,11 +8,11 @@ namespace Rage.Services
 {
     public class Config{
 
-        // public interface
+        #region public interface
         public IEnumerable<string> GetSearchFolders() {
             if (configModel.SearchRepoPaths == null)
             {
-                return new [] {@"/home/radaiko/src"};
+                return new [] {@"/home/radaiko/src/private", @"/home/radaiko/src/trumpf"};
             }
             return configModel.SearchRepoPaths;
         }
@@ -21,19 +22,35 @@ namespace Rage.Services
             return SaveConfigFile();
         }
 
-        // parameters
+        public bool SetOpenRepos(IEnumerable<string> openRepos){
+            configModel.OpenRepos = openRepos;
+            return SaveConfigFile();
+        }
+
+        public IEnumerable<string> GetOpenRepos() {
+            if (configModel.OpenRepos == null)
+            {
+                return Enumerable.Empty<string>();
+            }
+            return configModel.OpenRepos;
+        }
+        #endregion
+
+
+        #region parameters
         private ConfigModel configModel = new ConfigModel();
         private string configPath = "settings.config";
+        #endregion
 
-
-        // constructor
+        #region constructor
         public Config()
         {
             configModel = ReadConfigFile();
             
         }
+        #endregion
 
-        // internal
+        #region private
         private ConfigModel ReadConfigFile(){
             if (!File.Exists(configPath))
             {
@@ -58,5 +75,6 @@ namespace Rage.Services
 
 
         }
+        #endregion
     }
 }

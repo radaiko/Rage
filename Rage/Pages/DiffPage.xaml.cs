@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Rage.Views
+namespace Rage.Pages
 {
-    public class MenuView : UserControl
+    public class DiffPage : UserControl
     {
-        public MenuView()
+        public DiffPage()
         {
             InitializeComponent();
         }

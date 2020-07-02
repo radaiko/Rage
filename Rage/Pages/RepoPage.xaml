@@ -1,0 +1,243 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pages="clr-namespace:Rage.Pages"
+             xmlns:models="clr-namespace:Rage.Models"
+             xmlns:vm="clr-namespace:Rage.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Rage.Pages.RepoPage" FontSize="10" Foreground="#ECECED">
+
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="{x:Type vm:DiffPageViewModel}">
+      <pages:DiffPage/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:RepoGraphPageViewModel}">
+      <pages:RepoGraphPage/>
+    </DataTemplate>
+  </UserControl.DataTemplates>
+  <UserControl.Styles>
+    <Style Selector="Button">
+      <!-- <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/> -->
+      <!-- <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}"/> -->
+      <Setter Property="FontSize" Value="10"/>
+      <Setter Property="Height" Value="15"/>
+      <Setter Property="Background" Value="#33363F"/>
+      <Setter Property="Foreground" Value="#D2D3D3"/>
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="0 0 0 0" />
+      <Setter Property="Margin" Value="10 0 10 0" />
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+    <Style Selector="Button:pointerover">
+      <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
+      <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}"/>
+    </Style>
+    <Style Selector="Button.Stage /template/ ContentPresenter">
+      <Setter Property="CornerRadius" Value="3"/>
+    </Style>
+    <Style Selector="Button#Commit">
+      <Setter Property="BorderBrush" Value="#49eb34"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Background" Value="#b7ffad"/>
+      <Setter Property="Foreground" Value="{DynamicResource ThemeBackgroundBrush}"/>
+      <Setter Property="IsEnabled" Value="False"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button#Commit /template/ ContentPresenter">
+      <Setter Property="CornerRadius" Value="2"/>
+    </Style>
+    <Style Selector="Button#Commit.active">
+      <Setter Property="IsEnabled" Value="True"/>
+    </Style>
+    <Style Selector="TextBox"> 
+      <Setter Property="Padding" Value="0 0 0 0" />
+      <Setter Property="Margin" Value="10 0 10 0" />
+      <Setter Property="FontSize" Value="10" />
+      <Setter Property="Height" Value="20" />
+    </Style>
+    <Style Selector="TextBox#CommitDescription"> 
+      <Setter Property="FontSize" Value="9" />
+      <Setter Property="Height" Value="50" />
+    </Style>
+  </UserControl.Styles>
+
+  <Grid RowDefinitions="50,*" DataContext="{Binding Repo}">
+    <DockPanel Grid.Row="0" HorizontalAlignment="Center" Background="#313641" Width="{Binding $parent[UserControl].Bounds.Width}" >
+      <TextBlock Text="{Binding FolderName}" />
+      <TextBlock Text="Button Pull" />
+      <TextBlock Text="Button Push" />
+      <TextBlock Text="Button Branch" />
+      <TextBlock Text="Button Stash" />
+      <TextBlock Text="Button Pop" />
+      <TextBlock Text="{Binding FolderName}" />
+    </DockPanel>
+    <Grid Grid.Row="1" ColumnDefinitions="100,*,300">
+      <StackPanel Grid.Column="0" Background="#33363F">
+        <Expander Name="ExpanderLocalBrancher" IsExpanded="True">
+          <Expander.Header>
+            <DockPanel>
+              <TextBlock DockPanel.Dock="Left" Text="LOCAL"/>
+              <TextBlock DockPanel.Dock="Right" Text="{Binding LocalBranches.Count}" FontSize="8"/>
+            </DockPanel>
+          </Expander.Header>
+          <DockPanel>
+            <DockPanel.Styles>
+                <Style Selector="Button">
+                    <Setter Property="FontSize" Value="10"/>
+                    <Setter Property="Height" Value="20"/>
+                    <Setter Property="Background" Value="#282C34"/>
+                    <Setter Property="Foreground" Value="#D2D3D3"/>
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </DockPanel.Styles>
+            <ItemsControl Items="{Binding LocalBranches}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Button Command="{Binding $parent[UserControl].DataContext.SelectLocalBranch}" CommandParameter="{Binding}" Content="{Binding Name}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </DockPanel>
+        </Expander>
+        <Expander Name="ExpanderRemoteBranchers" IsExpanded="True">
+          <Expander.Header>
+            <DockPanel>
+              <TextBlock DockPanel.Dock="Left" Text="Remote"/>
+              <TextBlock DockPanel.Dock="Right" Text="{Binding RemoteBranches.Count}" FontSize="8"/>
+            </DockPanel>
+          </Expander.Header>
+          <DockPanel>
+            <DockPanel.Styles>
+                <Style Selector="Button">
+                    <Setter Property="FontSize" Value="10"/>
+                    <Setter Property="Height" Value="20"/>
+                    <Setter Property="Background" Value="#282C34"/>
+                    <Setter Property="Foreground" Value="#D2D3D3"/>
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </DockPanel.Styles>
+            <ItemsControl Items="{Binding RemoteBranches}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Button Command="{Binding $parent[UserControl].DataContext.SelectRemoteBranch}" CommandParameter="{Binding}" Content="{Binding Name}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </DockPanel>
+        </Expander>
+        <Expander Name="ExpanderIssues">
+          <Expander.Header>
+            <DockPanel>
+              <TextBlock Text="Issues"/>
+              <TextBlock DockPanel.Dock="Right" Text="{Binding CountOfIssues}"/>
+            </DockPanel>
+          </Expander.Header>
+          <DockPanel>
+            <DockPanel.Styles>
+                <Style Selector="Button">
+                    <Setter Property="FontSize" Value="10"/>
+                    <Setter Property="Height" Value="20"/>
+                    <Setter Property="Background" Value="#282C34"/>
+                    <Setter Property="Foreground" Value="#D2D3D3"/>
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </DockPanel.Styles>
+            <ItemsControl Items="{Binding Repos}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Button Command="{Binding $parent[UserControl].DataContext.SelectLocalBranch}" CommandParameter="{Binding}" Content="{Binding Name}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </DockPanel>
+        </Expander>
+        <Expander Name="ExpanderTags">
+          <Expander.Header>
+            <DockPanel>
+              <TextBlock Text="TAGS"/>
+              <TextBlock DockPanel.Dock="Right" Text="{Binding Tags.Count}"/>
+            </DockPanel>
+          </Expander.Header>
+          <DockPanel>
+            <DockPanel.Styles>
+                <Style Selector="Button">
+                    <Setter Property="FontSize" Value="10"/>
+                    <Setter Property="Height" Value="20"/>
+                    <Setter Property="Background" Value="#282C34"/>
+                    <Setter Property="Foreground" Value="#D2D3D3"/>
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </DockPanel.Styles>
+            <ItemsControl Items="{Binding Tags}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Button Command="{Binding $parent[UserControl].DataContext.SelectTags}" CommandParameter="{Binding}" Content="{Binding Name}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </DockPanel>
+        </Expander>
+      </StackPanel>
+      <ContentControl Grid.Column="1" Content="{Binding $parent[UserControl].DataContext.MiddleSection}" Background="#1C1E23"/>
+      <!-- <TextBlock Grid.Column="1" Text="{Binding $parent[UserControl].DataContext.MiddleSection}" HorizontalAlignment="Stretch" TextAlignment="Left"/> -->
+      <StackPanel Grid.Column="2" Background="#33363F">
+        <Expander IsExpanded="True" MaxHeight="250" MinHeight="250">
+          <Expander.Header>
+            <TextBlock Text="{Binding Path=UnstagesFiles.Count, StringFormat='Unstaged Files: {0}'}" Foreground="#D2D3D3" Width="{Binding $parent[0].Bounds.Width}" />
+          </Expander.Header>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+              <ItemsControl Items="{Binding UnstagesFiles}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Grid ColumnDefinitions="*,50">
+                        <Button Content="{Binding FileName}"
+                                Command="{Binding $parent[UserControl].DataContext.SelectFile}"
+                                CommandParameter="{Binding}"
+                                Grid.Column="0"/>
+                        <Button Content="Stage"
+                                Command="{Binding $parent[UserControl].DataContext.StageFile}"
+                                CommandParameter="{Binding}"
+                                Classes="Stage"
+                                Grid.Column="1"/>
+                      </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
+        </Expander>
+        <Expander IsExpanded="True" MaxHeight="250" MinHeight="250">
+          <Expander.Header>
+            <TextBlock Text="{Binding Path=StagedFiles.Count, StringFormat='Staged Files: {0}'}" Foreground="#D2D3D3" Width="{Binding $parent[0].Bounds.Width}" />
+          </Expander.Header>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+              <ItemsControl Items="{Binding StagedFiles}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                          <Grid ColumnDefinitions="*,65">
+                            <Button Content="{Binding FileName}"
+                                    Command="{Binding $parent[UserControl].DataContext.SelectFile}"
+                                    CommandParameter="{Binding}"
+                                    Grid.Column="0"/>
+                            <Button Content="UnStage"
+                                    Command="{Binding $parent[UserControl].DataContext.UnStageFile}"
+                                    CommandParameter="{Binding}"
+                                    Classes="Stage"
+                                    Grid.Column="1"/>
+                          </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+          </ScrollViewer>
+        </Expander> 
+        <Expander Header="Commit Message" IsExpanded="True">
+          <StackPanel  Orientation="Vertical">
+            <TextBox Watermark="Summary" Text="{Binding $parent[UserControl].DataContext.CommitSummary}" Background="#272A31" Name="CommitSummary"></TextBox>
+            <TextBox Watermark="Description" Text="{Binding $parent[UserControl].DataContext.CommitMessage}" Background="#272A31" AcceptsReturn="True" TextWrapping="Wrap" Name="CommitDescription"></TextBox>
+            <Button Content="Commit" Command="{Binding $parent[UserControl].DataContext.OnCommit}" Name="Commit"/>
+          </StackPanel>
+        </Expander> 
+      </StackPanel>
+    </Grid>
+  </Grid>
+</UserControl>

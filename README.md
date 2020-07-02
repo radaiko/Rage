@@ -20,12 +20,14 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ### Todos
 
-- [ ] ui to list git repos from multiple folders
-- [ ] ui to show changed files
-- [ ] ui to show diff
+- [x] ui to list git repos from multiple folders
+- [x] ui to show changed files
+- [x] ui to show diff
 - [ ] ui to git add files / folders
-- [ ] ui to git commit
-- [ ] ui to push
+- [x] ui to git commit
+- [x] ui to push
 - [ ] ui to fetch
 - [ ] ui to pull
 - [ ] ui to open repo in studio code
+- [ ] auto add github ssh to known host depending on the os
+- [ ] support of https repos

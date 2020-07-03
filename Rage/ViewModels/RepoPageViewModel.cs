@@ -59,6 +59,8 @@ namespace Rage.ViewModels
             gitHandler.CommitChanges(filesToAdd, CommitSummary, CommitMessage);
             gitHandler.PushCommits();
 
+            ReadRepo();
+            CleanCommit();
             // TODO: clean up interface.
             // TODO: reread repo.
         }
@@ -68,6 +70,10 @@ namespace Rage.ViewModels
         }
         #endregion
 
+        private void CleanCommit(){
+            CommitSummary = "";
+            CommitMessage = "";
+        }
 
         private void ReadRepo(){
             // Get branches

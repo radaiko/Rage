@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Rage.Models;
 using Rage.Services;
+using Rage.Utils.Models;
 using ReactiveUI;
+using Serilog;
 
 namespace Rage.ViewModels
 {
@@ -36,15 +38,24 @@ namespace Rage.ViewModels
         }
 
         private void StageFile(ChangedFile changedFile) {
-            Repo.StagedFiles.Add(changedFile);
-            gitHandler.StageFile(changedFile.FullPath);
-            Repo.UnstagesFiles.Remove(changedFile);
+            TransferModel transferModel = gitHandler.StageFile(changedFile.FullPath);
+            if (transferModel.Successful)
+            {
+                ReadRepo();
+            }
+            //Repo.StagedFiles.Add(changedFile);
+            //Repo.UnstagesFiles.Remove(changedFile);
         }
 
         private void UnStageFile(ChangedFile changedFile){
-            Repo.UnstagesFiles.Add(changedFile);
-            gitHandler.UnstageFile(changedFile.FullPath);
-            Repo.StagedFiles.Remove(changedFile);
+            TransferModel transferModel = gitHandler.UnstageFile(changedFile.FullPath);
+            if (transferModel.Successful)
+            {
+                ReadRepo();
+            }
+            // Repo.UnstagesFiles.Add(changedFile);
+            // gitHandler.UnstageFile(changedFile.FullPath);
+            // Repo.StagedFiles.Remove(changedFile);
 
         }
         private void OnCommit(){
@@ -57,14 +68,21 @@ namespace Rage.ViewModels
                 }
             }
             gitHandler.CommitChanges(filesToAdd, CommitSummary, CommitMessage);
-            gitHandler.PushCommits();
+            TransferModel commit = gitHandler.PushCommits();
 
-            ReadRepo();
-            CleanCommit();
+            if (commit.Successful)
+            {
+                ReadRepo();
+                CleanCommit();
+            } else
+            {
+                // TODO: show info what happend
+            }
+
         }
 
         private void SelectFile(string filename){
-            MiddleSection = new DiffPageViewModel(gitHandler.GetDiffToLast(filename)); 
+            MiddleSection = new DiffPageViewModel(gitHandler.GetDiffToLast(filename).Content); 
         }
         #endregion
 
@@ -74,6 +92,8 @@ namespace Rage.ViewModels
         }
 
         private void ReadRepo(){
+            Log.Information("Start scanning repos");
+            
             // Get branches
             Dictionary<string,ObservableCollection<Models.Branch>> tempBranchDictionary = gitHandler.GetBranches();
             Repo.LocalBranches = tempBranchDictionary["local"];
@@ -84,12 +104,34 @@ namespace Rage.ViewModels
             // TODO: read tags
 
             // Get changed files
-            Repo.UnstagesFiles = UpdateUnstagedFiles();
-            Repo.StagedFiles = UpdateStagedFiles();
+            if (Repo.UnstagesFiles != null)
+            {
+                Repo.UnstagesFiles.Clear();
+            } else
+            {
+                Repo.UnstagesFiles = new ObservableCollection<ChangedFile>();
+            }
+            foreach (var changedFile in UpdateUnstagedFiles())
+            {
+                Repo.UnstagesFiles.Add(changedFile);
+            }
+
+            // staged files
+            if (Repo.StagedFiles != null)
+            {
+                Repo.StagedFiles.Clear();
+            } else
+            {
+                Repo.StagedFiles = new ObservableCollection<ChangedFile>();
+            }
+            foreach (var changedFile in UpdateStagedFiles())
+            {
+                Repo.StagedFiles.Add(changedFile);
+            }
 
 
             // Get graph
-            Repo.RepoGraphAsString = gitHandler.GetGraphAsString();
+            Repo.RepoGraphAsString = gitHandler.GetGraphAsString().Content;
             MiddleSection = new RepoGraphPageViewModel(Repo.RepoGraphAsString);
 
             

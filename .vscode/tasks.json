@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build",
+      "label": "build Rage",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -10,8 +10,18 @@
         "${workspaceFolder}/Rage/Rage.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
-      ],
-      "problemMatcher": "$msCompile"
+      ]
+    },
+    {
+      "label": "build LogWindow",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/Rage.LogWindowUI/Rage.LogWindowUI.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ]
     },
     {
       "label": "publish",

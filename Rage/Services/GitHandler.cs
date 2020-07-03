@@ -6,6 +6,10 @@ using System.IO;
 using System.Linq;
 using Rage.Models;
 using Rage.Utils;
+using Rage.Utils.Models;
+using Rage.ViewModels;
+using Rage.Views;
+using Serilog;
 
 namespace Rage.Services
 {
@@ -61,7 +65,7 @@ namespace Rage.Services
             return new Dictionary<string,ObservableCollection<Branch>>() { {"local", localBranches}, {"remote", remoteBranches} };
         }
 
-        public string GetGraphAsString(){
+        public TransferModel GetGraphAsString(){
             return LogGraph();
         }
 
@@ -77,15 +81,15 @@ namespace Rage.Services
             return stagedFiles;
         }
 
-        public string GetDiffToLast(string filepath){
+        public TransferModel GetDiffToLast(string filepath){
             return DiffFile(filepath);
         }
 
-        public void StageFile(string filepath){
-            Stage(filepath);
+        public TransferModel StageFile(string filepath){
+            return Stage(filepath);
         }
-        public void UnstageFile(string filepath){
-            Unstage(filepath);
+        public TransferModel UnstageFile(string filepath){
+            return Unstage(filepath);
         }
 
         public void CommitChanges(List<string> filesToAdd, string commitSummary, string commitMessage)
@@ -98,9 +102,9 @@ namespace Rage.Services
             Commit(commitSummary, commitMessage);
         }
         
-        public void PushCommits()
+        public TransferModel PushCommits()
         {
-            Push();
+            return Push();
         }        
 
 
@@ -124,7 +128,19 @@ namespace Rage.Services
 
 
 
-
+        private void LogData(TransferModel transferModel){
+            if (transferModel.Successful)
+            {
+                Log.Information(transferModel.Content);
+            } else
+            {
+                Log.Error(transferModel.Content);
+                var logWindow = new LogWindow{
+                    DataContext = new LogWindowViewModel(),
+                };
+                logWindow.Show();
+            }
+        }
 
         #endregion
 
@@ -138,7 +154,9 @@ namespace Rage.Services
             List<Branch> branches = new List<Branch>();
             
             // get local branches
-            var result = Utils.Utils.SplitStringToArray(Utils.Utils.ExecutionProcess(gitCommand, gitBranch, repoPath), "\n");
+            TransferModel transferModel = Utils.Tools.ExecutionProcess(gitCommand, gitBranch, repoPath);
+            LogData(transferModel);
+            var result = Utils.Tools.SplitStringToArray(transferModel.Content, "\n");
 
 
             foreach (var stringBranch in result)
@@ -152,7 +170,9 @@ namespace Rage.Services
             }
 
             // get remote branches
-            result = Utils.Utils.SplitStringToArray(Utils.Utils.ExecutionProcess(gitCommand, gitBranch + " -r", repoPath), "\n");
+            transferModel = Utils.Tools.ExecutionProcess(gitCommand, gitBranch + " -r", repoPath);
+            LogData(transferModel);
+            result = Utils.Tools.SplitStringToArray(transferModel.Content, "\n");
 
             foreach (var stringBranch in result)
             {
@@ -171,14 +191,17 @@ namespace Rage.Services
             return branches.ToArray();
         }
 
-        private string LogGraph(){
-            return Utils.Utils.ExecutionProcess(gitCommand, gitLogWithGraphic, repoPath);
+        private TransferModel LogGraph(){
+            TransferModel transferModel = Utils.Tools.ExecutionProcess(gitCommand, gitLogWithGraphic, repoPath);
+            LogData(transferModel);
+            return transferModel;
         }
 
         private ObservableCollection<ChangedFile> ListUnstagedFiles(){
             ObservableCollection<ChangedFile> changedFiles = new ObservableCollection<ChangedFile>();
-            var files = Utils.Utils.ExecutionProcess(gitCommand, gitDiff + " --name-status", repoPath);
-            var lines = files.Split("\n").Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            TransferModel files = Utils.Tools.ExecutionProcess(gitCommand, gitDiff + " --name-status", repoPath);
+            LogData(files);
+            var lines = files.Content.Split("\n").Where(x => !string.IsNullOrEmpty(x)).ToArray();
             List<string> returnArr = new List<string>();
             foreach (var line in lines)
             {
@@ -217,8 +240,9 @@ namespace Rage.Services
 
         private ObservableCollection<ChangedFile> ListStagedFiles(){
             ObservableCollection<ChangedFile> changedFiles = new ObservableCollection<ChangedFile>();
-            var files = Utils.Utils.ExecutionProcess(gitCommand, gitDiff + "  --staged --name-status", repoPath);
-            var lines = files.Split("\n").Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            var files = Utils.Tools.ExecutionProcess(gitCommand, gitDiff + "  --staged --name-status", repoPath);
+            LogData(files);
+            var lines = files.Content.Split("\n").Where(x => !string.IsNullOrEmpty(x)).ToArray();
             List<string> returnArr = new List<string>();
             foreach (var line in lines)
             {
@@ -254,37 +278,41 @@ namespace Rage.Services
             }
             return changedFiles;
         }
-        private string DiffFile(string filepath){
-            var returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitDiff + " " + filepath, repoPath);
-            return returnValue;
+        private TransferModel DiffFile(string filepath){
+            TransferModel transferModel = Utils.Tools.ExecutionProcess(gitCommand, gitDiff + " " + filepath, repoPath);
+            LogData(transferModel);
+            return transferModel;
         }
 
-        private void Stage(string filepath){
-            var returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitAdd + " " + filepath, repoPath);
-            Console.WriteLine("Git Stage: " + returnValue);
+        private TransferModel Stage(string filepath){
+            TransferModel transferModel = Utils.Tools.ExecutionProcess(gitCommand, gitAdd + " " + filepath, repoPath);
+            LogData(transferModel);
+            return transferModel;
         }
         
-        private void Unstage(string filepath){
-            var returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitReset + " -- " + filepath, repoPath);
-            Console.WriteLine("Git Unstage: " + returnValue);
+        private TransferModel Unstage(string filepath){
+            TransferModel transferModel = Utils.Tools.ExecutionProcess(gitCommand, gitReset + " -- " + filepath, repoPath);
+            LogData(transferModel);
+            return transferModel;
         }
 
-        private void Commit(string commitSummary, string commitMessage){
-            string returnValue;
-
+        private TransferModel Commit(string commitSummary, string commitMessage){
+            TransferModel transferModel;
             if (commitMessage == "")
             {                
-                returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitCommit + " -m \"" + commitSummary + "\"", repoPath);
+                transferModel = Utils.Tools.ExecutionProcess(gitCommand, gitCommit + " -m \"" + commitSummary + "\"", repoPath);
             } else
             {
-                returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitCommit + " -m \"" + commitSummary + "\" -m \"" + commitMessage + "\"", repoPath);
+                transferModel = Utils.Tools.ExecutionProcess(gitCommand, gitCommit + " -m \"" + commitSummary + "\" -m \"" + commitMessage + "\"", repoPath);
             }
-            Console.WriteLine("Git Commit: " + returnValue);
+            LogData(transferModel);
+            return transferModel;
         }
 
-        private void Push(){
-            var returnValue = Utils.Utils.ExecutionProcess(gitCommand, gitPush, repoPath);
-            Console.WriteLine("Git Push: " + returnValue);
+        private TransferModel Push(){
+            TransferModel transferModel = Utils.Tools.ExecutionProcess(gitCommand, gitPush, repoPath);
+            LogData(transferModel);
+            return transferModel;
         }
         #endregion
     }

@@ -61,8 +61,6 @@ namespace Rage.ViewModels
 
             ReadRepo();
             CleanCommit();
-            // TODO: clean up interface.
-            // TODO: reread repo.
         }
 
         private void SelectFile(string filename){

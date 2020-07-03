@@ -15,7 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.*" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.9.11" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.9.*" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.*" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.*" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />

@@ -5,29 +5,15 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": ".NET Core Launch (Rage)",
+      "name": ".NET Core Launch ",
       "type": "coreclr",
       "request": "launch",
-      "preLaunchTask": "build Rage",
+      "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
       "program": "${workspaceFolder}/Rage/bin/Debug/netcoreapp3.0/Rage.dll",
       "args": [],
       "env": {},
-      "cwd": "${workspaceFolder}/Rage",
-      // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-      "console": "internalConsole",
-      "stopAtEntry": false
-    },
-    {
-      "name": ".NET Core Launch (RageLogWindow)",
-      "type": "coreclr",
-      "request": "launch",
-      "preLaunchTask": "build LogWindow",
-      // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/Rage.LogWindowUI/bin/Debug/netcoreapp3.0/Rage.LogWindowUI.dll",
-      "args": [],
-      "env": {},
-      "cwd": "${workspaceFolder}/Rage",
+      "cwd": "${workspaceFolder}/Rage/bin/Debug/netcoreapp3.0/",
       // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
       "console": "internalConsole",
       "stopAtEntry": false

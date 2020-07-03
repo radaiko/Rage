@@ -63,15 +63,53 @@
   </UserControl.Styles>
 
   <Grid RowDefinitions="50,*" DataContext="{Binding Repo}">
-    <DockPanel Grid.Row="0" HorizontalAlignment="Center" Background="#313641" Width="{Binding $parent[UserControl].Bounds.Width}" >
-      <TextBlock Text="{Binding FolderName}" />
-      <TextBlock Text="Button Pull" />
-      <TextBlock Text="Button Push" />
-      <TextBlock Text="Button Branch" />
-      <TextBlock Text="Button Stash" />
-      <TextBlock Text="Button Pop" />
-      <TextBlock Text="{Binding FolderName}" />
-    </DockPanel>
+    <Grid Grid.Row="0" HorizontalAlignment="Center" Background="#313641" Width="{Binding $parent[UserControl].Bounds.Width}"  ColumnDefinitions="*,40,40,40,40,40,*">
+      <Grid.Styles>
+        <Style Selector="Button">
+          <Setter Property="Width" Value="40"/>
+          <Setter Property="Height" Value="60"/>
+          <Setter Property="Margin" Value="0 0 0 0" />
+          <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Image">
+          <Setter Property="Height" Value="20"/>
+        </Style>
+        <Style Selector="TextBlock">
+          <Setter Property="FontSize" Value="8"/>
+          <Setter Property="Margin" Value="0 3 0 0"/>
+        </Style>
+      </Grid.Styles>
+      <Button Grid.Column="1">
+        <StackPanel>
+          <Image Source="/Assets/Images/pull.png" />
+          <TextBlock>Pull</TextBlock>
+        </StackPanel> 
+      </Button>
+      <Button Grid.Column="2">
+        <StackPanel>
+          <Image Source="/Assets/Images/push.png" />
+          <TextBlock>Push</TextBlock>
+        </StackPanel> 
+      </Button>
+      <Button Grid.Column="3">
+        <StackPanel>
+          <Image Source="/Assets/Images/push.png" />
+          <TextBlock>Branch</TextBlock>
+        </StackPanel> 
+      </Button>
+      <Button Grid.Column="4">
+        <StackPanel>
+          <Image Source="/Assets/Images/push.png" />
+          <TextBlock>Stash</TextBlock>
+        </StackPanel> 
+      </Button>
+      <Button Grid.Column="5">
+        <StackPanel>
+          <Image Source="/Assets/Images/push.png" />
+          <TextBlock>Pop</TextBlock>
+        </StackPanel> 
+      </Button>
+    </Grid>
     <Grid Grid.Row="1" ColumnDefinitions="100,*,300">
       <StackPanel Grid.Column="0" Background="#33363F">
         <Expander Name="ExpanderLocalBrancher" IsExpanded="True">

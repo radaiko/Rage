@@ -26,10 +26,13 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 - [ ] ui to git add files / folders
 - [x] ui to git commit
 - [x] ui to push
+- [ ] ui to mention credits
+- [ ] ui to configure repo folders
+- [ ] support of git profiles
 - [ ] ui to fetch
 - [ ] ui to pull
 - [ ] ui to open repo in studio code
 - [ ] auto add github ssh to known host depending on the os
 - [ ] support of https repos
 - [ ] support of github issues https://api.github.com/repos/radaiko/Rage/issues
-- [ ] support of git profiles
+- [ ] support of mention github issues in commit with ui

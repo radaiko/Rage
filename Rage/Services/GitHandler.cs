@@ -330,7 +330,7 @@ namespace Rage.Services
         }
 
         private TransferModel Push(){
-            TransferModel transferModel = Utils.Tools.ExecutionProcess(gitCommand, gitPush, repoPath);
+            TransferModel transferModel = Utils.Tools.ExecutionProcess(gitCommand, gitPush + " --porcelain", repoPath);
             LogData(transferModel);
             return transferModel;
         }

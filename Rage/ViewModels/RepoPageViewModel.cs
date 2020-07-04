@@ -43,8 +43,6 @@ namespace Rage.ViewModels
             {
                 ReadRepo();
             }
-            //Repo.StagedFiles.Add(changedFile);
-            //Repo.UnstagesFiles.Remove(changedFile);
         }
 
         private void UnStageFile(ChangedFile changedFile){
@@ -70,8 +68,8 @@ namespace Rage.ViewModels
             TransferModel commitChanges = gitHandler.CommitChanges(filesToAdd, CommitSummary, CommitMessage);
             if (commitChanges.Successful)
             {
-                ManualPush();
                 CleanCommit();
+                ManualPush();
             } else
             {
                 Log.Error("Unable to commit. Error: " + commitChanges.Content);

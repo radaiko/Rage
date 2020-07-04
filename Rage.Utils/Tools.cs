@@ -16,12 +16,9 @@ namespace Rage.Utils
                     return RunningCommand(filename, args, workingDirectory);
                 case string a when a.Contains("Linux"):
                     return RunningCommand(filename, args, workingDirectory);
-
                 default:
                     return new TransferModel(){ Successful = false, Content = "Unknown OS" };;
             }
-            
-
         }
 
         public static string[] SplitStringToArray(string inputString, string splitChar) {

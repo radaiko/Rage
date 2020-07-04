@@ -84,31 +84,31 @@
           <Setter Property="Margin" Value="0 3 0 0"/>
         </Style>
       </Grid.Styles>
-      <Button Grid.Column="1">
+      <Button Grid.Column="1" Command="{Binding ManualPull}">
         <StackPanel>
           <Image Source="/Assets/Images/pull.png" />
           <TextBlock>Pull</TextBlock>
         </StackPanel> 
       </Button>
-      <Button Grid.Column="2">
+      <Button Grid.Column="2" Command="{Binding ManualPush}">
         <StackPanel>
           <Image Source="/Assets/Images/push.png" />
           <TextBlock>Push</TextBlock>
         </StackPanel> 
       </Button>
-      <Button Grid.Column="3">
+      <Button Grid.Column="3" Command="{Binding ManualBranch}">
         <StackPanel>
           <Image Source="/Assets/Images/push.png" />
           <TextBlock>Branch</TextBlock>
         </StackPanel> 
       </Button>
-      <Button Grid.Column="4">
+      <Button Grid.Column="4" Command="{Binding ManualStash}">
         <StackPanel>
           <Image Source="/Assets/Images/push.png" />
           <TextBlock>Stash</TextBlock>
         </StackPanel> 
       </Button>
-      <Button Grid.Column="5">
+      <Button Grid.Column="5" Command="{Binding ManualPop}">
         <StackPanel>
           <Image Source="/Assets/Images/push.png" />
           <TextBlock>Pop</TextBlock>
@@ -279,7 +279,7 @@
           <StackPanel  Orientation="Vertical">
             <TextBox Watermark="Summary" Text="{Binding $parent[UserControl].DataContext.CommitSummary, Mode=TwoWay}" Background="#272A31" Name="CommitSummary"></TextBox>
             <TextBox Watermark="Description" Text="{Binding $parent[UserControl].DataContext.CommitMessage, Mode=TwoWay}" Background="#272A31" AcceptsReturn="True" TextWrapping="Wrap" Name="CommitDescription"></TextBox>
-            <Button Content="Commit" Command="{Binding $parent[UserControl].DataContext.OnCommit}" Name="Commit"/>
+            <Button Content="Commit and Push" Command="{Binding $parent[UserControl].DataContext.OnCommit}" Name="Commit"/>
           </StackPanel>
         </Expander> 
       </StackPanel>

@@ -84,31 +84,31 @@
           <Setter Property="Margin" Value="0 3 0 0"/>
         </Style>
       </Grid.Styles>
-      <Button Grid.Column="1" Command="{Binding ManualPull}">
+      <Button Grid.Column="1" Command="{Binding $parent[UserControl].DataContext.ManualPull}">
         <StackPanel>
           <Image Source="/Assets/Images/pull.png" />
           <TextBlock>Pull</TextBlock>
         </StackPanel> 
       </Button>
-      <Button Grid.Column="2" Command="{Binding ManualPush}">
+      <Button Grid.Column="2" Command="{Binding $parent[UserControl].DataContext.ManualPush}">
         <StackPanel>
           <Image Source="/Assets/Images/push.png" />
           <TextBlock>Push</TextBlock>
         </StackPanel> 
       </Button>
-      <Button Grid.Column="3" Command="{Binding ManualBranch}">
+      <Button Grid.Column="3" Command="{Binding $parent[UserControl].DataContext.ManualBranch}">
         <StackPanel>
           <Image Source="/Assets/Images/push.png" />
           <TextBlock>Branch</TextBlock>
         </StackPanel> 
       </Button>
-      <Button Grid.Column="4" Command="{Binding ManualStash}">
+      <Button Grid.Column="4" Command="{Binding $parent[UserControl].DataContext.ManualStash}">
         <StackPanel>
           <Image Source="/Assets/Images/push.png" />
           <TextBlock>Stash</TextBlock>
         </StackPanel> 
       </Button>
-      <Button Grid.Column="5" Command="{Binding ManualPop}">
+      <Button Grid.Column="5" Command="{Binding $parent[UserControl].DataContext.ManualPop}">
         <StackPanel>
           <Image Source="/Assets/Images/push.png" />
           <TextBlock>Pop</TextBlock>

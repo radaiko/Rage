@@ -70,18 +70,23 @@ namespace Rage.ViewModels
             TransferModel commitChanges = gitHandler.CommitChanges(filesToAdd, CommitSummary, CommitMessage);
             if (commitChanges.Successful)
             {
-                TransferModel commit = gitHandler.PushCommits();
-                if (commit.Successful)
-                {
-                    ReadRepo();
-                    CleanCommit();
-                } else
-                {
-                    Log.Error("Unable to push. Error: " + commit.Content);
-                }
+                ManualPush();
+                CleanCommit();
             } else
             {
                 Log.Error("Unable to commit. Error: " + commitChanges.Content);
+            }
+
+        }
+
+         public void ManualPush(){
+            TransferModel push = gitHandler.PushCommits();
+            if (push.Successful)
+            {
+                ReadRepo();
+            } else
+            {
+                Log.Error("Unable to push. Error: " + push.Content);
             }
 
         }

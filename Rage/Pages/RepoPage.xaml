@@ -60,6 +60,11 @@
       <Setter Property="FontSize" Value="9" />
       <Setter Property="Height" Value="50" />
     </Style>
+    <Style Selector="TextBlock">
+      <Setter Property="TextAlignment" Value="Center"/>
+      <Setter Property="FontSize" Value="10"/>
+      <Setter Property="Height" Value="15"/>
+    </Style>
   </UserControl.Styles>
 
   <Grid RowDefinitions="50,*" DataContext="{Binding Repo}">
@@ -228,16 +233,17 @@
               <ItemsControl Items="{Binding UnstagesFiles}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                      <Grid ColumnDefinitions="*,50">
+                      <Grid ColumnDefinitions="10,*,50">
+                        <TextBlock Text="{Binding Status}" Grid.Column="0"/>
                         <Button Content="{Binding FileName}"
                                 Command="{Binding $parent[UserControl].DataContext.SelectFile}"
                                 CommandParameter="{Binding}"
-                                Grid.Column="0"/>
+                                Grid.Column="1"/>
                         <Button Content="Stage"
                                 Command="{Binding $parent[UserControl].DataContext.StageFile}"
                                 CommandParameter="{Binding}"
                                 Classes="Stage"
-                                Grid.Column="1"/>
+                                Grid.Column="2"/>
                       </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -252,16 +258,17 @@
               <ItemsControl Items="{Binding StagedFiles}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                          <Grid ColumnDefinitions="*,65">
+                          <Grid ColumnDefinitions="10,*,65">
+                            <TextBlock Text="{Binding Status}" Grid.Column="0"/>
                             <Button Content="{Binding FileName}"
                                     Command="{Binding $parent[UserControl].DataContext.SelectFile}"
                                     CommandParameter="{Binding}"
-                                    Grid.Column="0"/>
+                                    Grid.Column="1"/>
                             <Button Content="UnStage"
                                     Command="{Binding $parent[UserControl].DataContext.UnStageFile}"
                                     CommandParameter="{Binding}"
                                     Classes="Stage"
-                                    Grid.Column="1"/>
+                                    Grid.Column="2"/>
                           </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

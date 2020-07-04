@@ -122,8 +122,75 @@ namespace Rage.Services
         #endregion
 
         #region private
-        private void ReadRepo(){
 
+        private ChangedFile ExtractFileStatus(string indicator, string filename){
+            switch (indicator)
+                {
+                    case "M": // modified
+                        return new ChangedFile(){
+                            FileName = filename, 
+                            FullPath = Path.Combine(repoPath, filename),
+                            Status = Repo.FileStatus.M
+                        };
+                    case "D": // deleted
+                        return new ChangedFile(){
+                            FileName = filename, 
+                            FullPath = Path.Combine(repoPath, filename), 
+                            Status = Repo.FileStatus.D
+                        };
+                    case "A": // added
+                        return new ChangedFile(){
+                            FileName = filename, 
+                            FullPath = Path.Combine(repoPath, filename), 
+                            Status = Repo.FileStatus.A
+                        };
+                    case "?": // untracked
+                        return new ChangedFile(){
+                            FileName = filename, 
+                            FullPath = Path.Combine(repoPath, filename), 
+                            Status = Repo.FileStatus.U
+                        };
+                    default:
+                        Log.Warning("Unknown git indicator found. Please report! Indicator: " + indicator);
+                        return new ChangedFile();
+                }
+
+        }
+        private ChangedFile AnalyzeFileStatus(bool isUnstage, string line){
+
+            if (isUnstage)
+            {
+                // ---- untracked file ----
+                if (line.StartsWith("?"))
+                {
+                    var filename = line.Split(" ", 2)[1];
+                    return ExtractFileStatus("?", filename);
+                } 
+                // -----------------------
+                // ---- unstaged file ----
+                if (line.StartsWith(" "))
+                {
+                    line = line.Substring(1);
+                    var indicator = line.Split(" ",2)[0];
+                    var filename = line.Split(" ", 2)[1];
+                    return ExtractFileStatus(indicator, filename);
+                    
+                }
+            } else
+            {
+                // ---------------------
+                // ---- staged file ----
+                if (!line.StartsWith(" "))
+                {
+                    var indicator = line.Split(" ",2)[0];
+                    var filename = line.Split(" ", 2)[1];
+                    return ExtractFileStatus(indicator, filename);
+                }
+            }
+            
+            // ---- unknown ----
+            Log.Error("Unknown file status");
+            return new ChangedFile();
         }
 
 
@@ -199,40 +266,17 @@ namespace Rage.Services
 
         private ObservableCollection<ChangedFile> ListUnstagedFiles(){
             ObservableCollection<ChangedFile> changedFiles = new ObservableCollection<ChangedFile>();
-            TransferModel files = Utils.Tools.ExecutionProcess(gitCommand, gitDiff + " --name-status", repoPath);
+            TransferModel files = Utils.Tools.ExecutionProcess(gitCommand, gitStatus + " --porcelain", repoPath);
             LogData(files);
             var lines = files.Content.Split("\n").Where(x => !string.IsNullOrEmpty(x)).ToArray();
             List<string> returnArr = new List<string>();
             foreach (var line in lines)
             {
-                var indicator = line.Split("\t")[0];
-                var filename = line.Split("\t")[1];
-                switch (indicator)
+                ChangedFile changedFile = AnalyzeFileStatus(isUnstage:true ,line);
+                if (changedFile.FileName != null)
                 {
-                    case "M":
-                    changedFiles.Add(new ChangedFile(){
-                        FileName = filename, 
-                        FullPath = Path.Combine(repoPath, filename),
-                        Status = Repo.FileStatus.Modified
-                    });
-                        break;
-                    case "D":
-                    changedFiles.Add(new ChangedFile(){
-                        FileName = filename, 
-                        FullPath = Path.Combine(repoPath, filename), 
-                        Status = Repo.FileStatus.Deleted
-                    });
-                        break;
-                    case "??":
-                    changedFiles.Add(new ChangedFile(){
-                        FileName = filename, 
-                        FullPath = Path.Combine(repoPath, filename), 
-                        Status = Repo.FileStatus.New
-                    });
-                        break;
-                    default:
-                        // log unknown type
-                        break;
+                    
+                changedFiles.Add(changedFile);
                 }
             }
             return changedFiles;
@@ -240,40 +284,16 @@ namespace Rage.Services
 
         private ObservableCollection<ChangedFile> ListStagedFiles(){
             ObservableCollection<ChangedFile> changedFiles = new ObservableCollection<ChangedFile>();
-            var files = Utils.Tools.ExecutionProcess(gitCommand, gitDiff + "  --staged --name-status", repoPath);
+            var files = Utils.Tools.ExecutionProcess(gitCommand, gitStatus + " --porcelain", repoPath);
             LogData(files);
             var lines = files.Content.Split("\n").Where(x => !string.IsNullOrEmpty(x)).ToArray();
             List<string> returnArr = new List<string>();
             foreach (var line in lines)
             {
-                var indicator = line.Split("\t")[0];
-                var filename = line.Split("\t")[1];
-                switch (indicator)
+                ChangedFile changedFile = AnalyzeFileStatus(isUnstage:false ,line);
+                if (changedFile.FileName != null)
                 {
-                    case "M":
-                    changedFiles.Add(new ChangedFile(){
-                        FileName = filename, 
-                        FullPath = Path.Combine(repoPath, filename), 
-                        Status = Repo.FileStatus.Modified
-                    });
-                        break;
-                    case "D":
-                    changedFiles.Add(new ChangedFile(){
-                        FileName = filename, 
-                        FullPath = Path.Combine(repoPath, filename), 
-                        Status = Repo.FileStatus.Deleted
-                    });
-                        break;
-                    case "??":
-                    changedFiles.Add(new ChangedFile(){
-                        FileName = filename, 
-                        FullPath = Path.Combine(repoPath, filename), 
-                        Status = Repo.FileStatus.New
-                    });
-                        break;
-                    default:
-                        // log unknown type
-                        break;
+                    changedFiles.Add(changedFile);
                 }
             }
             return changedFiles;

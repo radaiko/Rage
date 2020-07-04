@@ -277,8 +277,8 @@
         </Expander> 
         <Expander Header="Commit Message" IsExpanded="True">
           <StackPanel  Orientation="Vertical">
-            <TextBox Watermark="Summary" Text="{Binding $parent[UserControl].DataContext.CommitSummary, Mode=TwoWay}" Background="#272A31" Name="CommitSummary"></TextBox>
-            <TextBox Watermark="Description" Text="{Binding $parent[UserControl].DataContext.CommitMessage, Mode=TwoWay}" Background="#272A31" AcceptsReturn="True" TextWrapping="Wrap" Name="CommitDescription"></TextBox>
+            <TextBox Watermark="Summary" Text="{Binding $parent[UserControl].DataContext.CommitSummary}" Background="#272A31" Name="CommitSummary"></TextBox>
+            <TextBox Watermark="Description" Text="{Binding $parent[UserControl].DataContext.CommitMessage}" Background="#272A31" AcceptsReturn="True" TextWrapping="Wrap" Name="CommitDescription"></TextBox>
             <Button Content="Commit and Push" Command="{Binding $parent[UserControl].DataContext.OnCommit}" Name="Commit"/>
           </StackPanel>
         </Expander> 

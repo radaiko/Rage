@@ -14,10 +14,18 @@ namespace Rage.ViewModels
     {
         private GitHandler gitHandler;
         private ViewModelBase _middleSection;
+        private string _commitSummary;
+        private string _commitMessage;
 
         public Repo Repo { get; set;}
-        public string CommitSummary { get; set; }
-        public string CommitMessage { get; set; }
+        public string CommitSummary {
+            get { return _commitSummary; }
+            set { this.RaiseAndSetIfChanged(ref _commitSummary, value); }
+        }
+        public string CommitMessage {
+            get { return _commitMessage; }
+            set { this.RaiseAndSetIfChanged(ref _commitMessage, value); }
+        }
         public ViewModelBase MiddleSection
         {
             get { return _middleSection; }

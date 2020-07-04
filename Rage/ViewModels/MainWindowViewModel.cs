@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using Rage.Models;
 using Rage.Services;
 using ReactiveUI;
+using Serilog;
+using Serilog.Events;
 
 namespace Rage.ViewModels
 {
@@ -39,6 +42,15 @@ namespace Rage.ViewModels
 
         public MainWindowViewModel()
         {
+            // LogItems = new ObservableCollection<LogEvent>();
+            Log.Logger = new LoggerConfiguration()
+             .MinimumLevel.Debug()
+             .WriteTo.File( path:"log-.txt", rollingInterval: RollingInterval.Day)
+             .WriteTo.Observers(events => events
+                 .Do(evt => LogModel.LogItems.Add(evt))
+                 .Subscribe(), restrictedToMinimumLevel: LogEventLevel.Warning)
+             .CreateLogger();
+
             MenuPageViewModel = new MenuPageViewModel();
             BottomPageViewModel = new BottomPageViewModel();
             RepoSearchFolders = new ObservableCollection<RepoSearchFolder>();
@@ -135,7 +147,7 @@ namespace Rage.ViewModels
         #endregion
 
 
-        private void Initialize(){
+        private void Initialize(){  
             ScanRepos();
 
             // reopen last opened repos

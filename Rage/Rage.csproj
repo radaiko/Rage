@@ -14,8 +14,14 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="avalonia" Version="0.9.*" />
-    <PackageReference Include="avalonia.desktop" Version="0.9.*" />
-    <PackageReference Include="avalonia.reactiveui" Version="0.9.*" />
+    <PackageReference Include="Avalonia" Version="0.9.*" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.9.*" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.9.*" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.*" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.Observable" Version="2.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Rage.Utils\Rage.Utils.csproj" />
   </ItemGroup>
 </Project>

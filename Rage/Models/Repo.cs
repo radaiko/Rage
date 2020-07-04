@@ -17,9 +17,10 @@ namespace Rage.Models
 
         public enum FileStatus
         {
-            Deleted,
-            Modified,
-            New,
+            D, // deleted
+            M, // modified
+            U, // untracked
+            A, // added
 
         }
     }

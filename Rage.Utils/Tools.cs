@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using Rage.Utils.Models;
 
 namespace Rage.Utils
 {
-    public static class Utils
+    public static class Tools
     {
 
-        public static string ExecutionProcess(string filename, string args, string workingDirectory){
+        public static TransferModel ExecutionProcess(string filename, string args, string workingDirectory){
             switch (System.Runtime.InteropServices.RuntimeInformation.OSDescription.ToString())
             {
                 case string a when a.Contains("Windows"):
@@ -15,12 +16,9 @@ namespace Rage.Utils
                     return RunningCommand(filename, args, workingDirectory);
                 case string a when a.Contains("Linux"):
                     return RunningCommand(filename, args, workingDirectory);
-
                 default:
-                    return "";
+                    return new TransferModel(){ Successful = false, Content = "Unknown OS" };;
             }
-            
-
         }
 
         public static string[] SplitStringToArray(string inputString, string splitChar) {
@@ -30,7 +28,7 @@ namespace Rage.Utils
 
         #region private
 
-        private static string RunningCommand(string filename, string args, string workingDirectory){
+        private static TransferModel RunningCommand(string filename, string args, string workingDirectory){
             //var escapedArgs = args.Replace("\"", "\\\"");
             
             var process = new Process()
@@ -51,8 +49,8 @@ namespace Rage.Utils
             string error = process.StandardError.ReadToEnd();
             process.WaitForExit();
 
-            if (string.IsNullOrEmpty(error)) { return output; }
-            else { return error; }
+            if (string.IsNullOrEmpty(error)) { return new TransferModel(){ Successful = true, Content = output }; }
+            else { return new TransferModel(){ Successful = false, Content = error }; }
         }
 
         #endregion

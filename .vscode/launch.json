@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": ".NET Core Launch (console)",
+      "name": ".NET Core Launch ",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
@@ -13,7 +13,7 @@
       "program": "${workspaceFolder}/Rage/bin/Debug/netcoreapp3.0/Rage.dll",
       "args": [],
       "env": {},
-      "cwd": "${workspaceFolder}/Rage",
+      "cwd": "${workspaceFolder}/Rage/bin/Debug/netcoreapp3.0/",
       // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
       "console": "internalConsole",
       "stopAtEntry": false

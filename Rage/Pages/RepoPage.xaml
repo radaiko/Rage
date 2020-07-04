@@ -60,18 +60,61 @@
       <Setter Property="FontSize" Value="9" />
       <Setter Property="Height" Value="50" />
     </Style>
+    <Style Selector="TextBlock">
+      <Setter Property="TextAlignment" Value="Center"/>
+      <Setter Property="FontSize" Value="10"/>
+      <Setter Property="Height" Value="15"/>
+    </Style>
   </UserControl.Styles>
 
   <Grid RowDefinitions="50,*" DataContext="{Binding Repo}">
-    <DockPanel Grid.Row="0" HorizontalAlignment="Center" Background="#313641" Width="{Binding $parent[UserControl].Bounds.Width}" >
-      <TextBlock Text="{Binding FolderName}" />
-      <TextBlock Text="Button Pull" />
-      <TextBlock Text="Button Push" />
-      <TextBlock Text="Button Branch" />
-      <TextBlock Text="Button Stash" />
-      <TextBlock Text="Button Pop" />
-      <TextBlock Text="{Binding FolderName}" />
-    </DockPanel>
+    <Grid Grid.Row="0" HorizontalAlignment="Center" Background="#313641" Width="{Binding $parent[UserControl].Bounds.Width}"  ColumnDefinitions="*,40,40,40,40,40,*">
+      <Grid.Styles>
+        <Style Selector="Button">
+          <Setter Property="Width" Value="40"/>
+          <Setter Property="Height" Value="60"/>
+          <Setter Property="Margin" Value="0 0 0 0" />
+          <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Image">
+          <Setter Property="Height" Value="20"/>
+        </Style>
+        <Style Selector="TextBlock">
+          <Setter Property="FontSize" Value="8"/>
+          <Setter Property="Margin" Value="0 3 0 0"/>
+        </Style>
+      </Grid.Styles>
+      <Button Grid.Column="1" Command="{Binding $parent[UserControl].DataContext.ManualPull}">
+        <StackPanel>
+          <Image Source="/Assets/Images/pull.png" />
+          <TextBlock>Pull</TextBlock>
+        </StackPanel> 
+      </Button>
+      <Button Grid.Column="2" Command="{Binding $parent[UserControl].DataContext.ManualPush}">
+        <StackPanel>
+          <Image Source="/Assets/Images/push.png" />
+          <TextBlock>Push</TextBlock>
+        </StackPanel> 
+      </Button>
+      <Button Grid.Column="3" Command="{Binding $parent[UserControl].DataContext.ManualBranch}">
+        <StackPanel>
+          <Image Source="/Assets/Images/push.png" />
+          <TextBlock>Branch</TextBlock>
+        </StackPanel> 
+      </Button>
+      <Button Grid.Column="4" Command="{Binding $parent[UserControl].DataContext.ManualStash}">
+        <StackPanel>
+          <Image Source="/Assets/Images/push.png" />
+          <TextBlock>Stash</TextBlock>
+        </StackPanel> 
+      </Button>
+      <Button Grid.Column="5" Command="{Binding $parent[UserControl].DataContext.ManualPop}">
+        <StackPanel>
+          <Image Source="/Assets/Images/push.png" />
+          <TextBlock>Pop</TextBlock>
+        </StackPanel> 
+      </Button>
+    </Grid>
     <Grid Grid.Row="1" ColumnDefinitions="100,*,300">
       <StackPanel Grid.Column="0" Background="#33363F">
         <Expander Name="ExpanderLocalBrancher" IsExpanded="True">
@@ -190,16 +233,17 @@
               <ItemsControl Items="{Binding UnstagesFiles}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                      <Grid ColumnDefinitions="*,50">
+                      <Grid ColumnDefinitions="10,*,50">
+                        <TextBlock Text="{Binding Status}" Grid.Column="0"/>
                         <Button Content="{Binding FileName}"
                                 Command="{Binding $parent[UserControl].DataContext.SelectFile}"
                                 CommandParameter="{Binding}"
-                                Grid.Column="0"/>
+                                Grid.Column="1"/>
                         <Button Content="Stage"
                                 Command="{Binding $parent[UserControl].DataContext.StageFile}"
                                 CommandParameter="{Binding}"
                                 Classes="Stage"
-                                Grid.Column="1"/>
+                                Grid.Column="2"/>
                       </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -214,16 +258,17 @@
               <ItemsControl Items="{Binding StagedFiles}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                          <Grid ColumnDefinitions="*,65">
+                          <Grid ColumnDefinitions="10,*,65">
+                            <TextBlock Text="{Binding Status}" Grid.Column="0"/>
                             <Button Content="{Binding FileName}"
                                     Command="{Binding $parent[UserControl].DataContext.SelectFile}"
                                     CommandParameter="{Binding}"
-                                    Grid.Column="0"/>
+                                    Grid.Column="1"/>
                             <Button Content="UnStage"
                                     Command="{Binding $parent[UserControl].DataContext.UnStageFile}"
                                     CommandParameter="{Binding}"
                                     Classes="Stage"
-                                    Grid.Column="1"/>
+                                    Grid.Column="2"/>
                           </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -234,7 +279,7 @@
           <StackPanel  Orientation="Vertical">
             <TextBox Watermark="Summary" Text="{Binding $parent[UserControl].DataContext.CommitSummary}" Background="#272A31" Name="CommitSummary"></TextBox>
             <TextBox Watermark="Description" Text="{Binding $parent[UserControl].DataContext.CommitMessage}" Background="#272A31" AcceptsReturn="True" TextWrapping="Wrap" Name="CommitDescription"></TextBox>
-            <Button Content="Commit" Command="{Binding $parent[UserControl].DataContext.OnCommit}" Name="Commit"/>
+            <Button Content="Commit and Push" Command="{Binding $parent[UserControl].DataContext.OnCommit}" Name="Commit"/>
           </StackPanel>
         </Expander> 
       </StackPanel>

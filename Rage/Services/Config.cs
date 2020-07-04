@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using Rage.Models;
+using Serilog;
 
 namespace Rage.Services
 {
@@ -67,9 +68,9 @@ namespace Rage.Services
                 File.WriteAllText(configPath, JsonSerializer.Serialize(configModel));
                 return true;
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-                // TODO: LOG
+                Log.Error("Error while saving config: " + e);
                 return false;
             }
 

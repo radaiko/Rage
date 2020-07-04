@@ -67,16 +67,21 @@ namespace Rage.ViewModels
                     filesToAdd.Add(changeFile.FullPath);
                 }
             }
-            gitHandler.CommitChanges(filesToAdd, CommitSummary, CommitMessage);
-            TransferModel commit = gitHandler.PushCommits();
-
-            if (commit.Successful)
+            TransferModel commitChanges = gitHandler.CommitChanges(filesToAdd, CommitSummary, CommitMessage);
+            if (commitChanges.Successful)
             {
-                ReadRepo();
-                CleanCommit();
+                TransferModel commit = gitHandler.PushCommits();
+                if (commit.Successful)
+                {
+                    ReadRepo();
+                    CleanCommit();
+                } else
+                {
+                    Log.Error("Unable to push. Error: " + commit.Content);
+                }
             } else
             {
-                // TODO: show info what happend
+                Log.Error("Unable to commit. Error: " + commitChanges.Content);
             }
 
         }

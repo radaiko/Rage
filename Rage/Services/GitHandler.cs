@@ -92,14 +92,14 @@ namespace Rage.Services
             return Unstage(filepath);
         }
 
-        public void CommitChanges(List<string> filesToAdd, string commitSummary, string commitMessage)
+        public TransferModel CommitChanges(List<string> filesToAdd, string commitSummary, string commitMessage)
         {
             // add files
             foreach (var filepath in filesToAdd)
             {
                 Stage(filepath);     
             }
-            Commit(commitSummary, commitMessage);
+            return Commit(commitSummary, commitMessage);
         }
         
         public TransferModel PushCommits()

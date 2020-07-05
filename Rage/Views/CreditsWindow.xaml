@@ -23,5 +23,5 @@
             </Border>
         </DataTemplate>
     </ListBox.ItemTemplate>
-</ListBox>
+  </ListBox>
 </Window>

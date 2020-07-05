@@ -7,5 +7,6 @@ namespace Rage.ViewModels
 {
     public class ViewModelBase : ReactiveObject
     {
+        public string Name { get; set; }
     }
 }

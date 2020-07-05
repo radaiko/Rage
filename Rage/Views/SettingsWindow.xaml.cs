@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Rage.Views
 {
-    public class SettinsWindow : Window
+    public class SettingsWindow : Window
     {
-        public SettinsWindow()
+        public SettingsWindow()
         {
             InitializeComponent();
         }

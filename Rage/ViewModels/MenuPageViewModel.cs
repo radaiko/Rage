@@ -1,4 +1,5 @@
 using System;
+using Rage.Views;
 
 namespace Rage.ViewModels
 {
@@ -13,6 +14,18 @@ namespace Rage.ViewModels
 
         private void OpenSettings(){
             // TODO: create settings dialog
+        }
+        private void OpenLog(){
+            var window = new LogWindow{
+                DataContext = new LogWindowViewModel(),
+            };
+            window.Show();
+        }
+        private void OpenCredits(){
+            var window = new CreditsWindow{
+                DataContext = new CreditsWindowViewModel(),
+            };
+            window.Show();
         }
         private void CloseApp(){
             Environment.Exit(0);

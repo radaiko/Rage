@@ -30,6 +30,8 @@
             <!--<MenuItem Header="_View">
             </MenuItem>-->
             <MenuItem Header="_Help">
+                <MenuItem Header="_Log" Command="{Binding OpenLog}"/>
+                <MenuItem Header="_Credits" Command="{Binding OpenCredits}"/>
                 <MenuItem Header="_About"/>
                 <Separator/>
                 <MenuItem Header="Get Help"/>            

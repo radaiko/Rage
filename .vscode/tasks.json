@@ -2,9 +2,16 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "prepare_packageList",
+      "command": "dotnet list package > Rage/package.txt",
+      "type": "shell",
+      "args": []
+    },
+    {
       "label": "build",
       "command": "dotnet",
       "type": "process",
+      "dependsOn": ["prepare_packageList"],
       "args": [
         "build",
         "${workspaceFolder}/Rage/Rage.csproj",

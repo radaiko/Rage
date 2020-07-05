@@ -23,7 +23,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 - [x] ui to list git repos from multiple folders
 - [x] ui to show changed files
 - [x] ui to show diff
-- [ ] ui to git add files / folders
+- [x] ui to git add files / folders
 - [x] ui to git commit
 - [x] ui to push
 - [ ] ui to mention credits
@@ -34,5 +34,5 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 - [ ] ui to open repo in studio code
 - [ ] auto add github ssh to known host depending on the os
 - [ ] support of https repos
-- [ ] support of github issues https://api.github.com/repos/radaiko/Rage/issues
+- [ ] support of github issues <https://api.github.com/repos/radaiko/Rage/issues>
 - [ ] support of mention github issues in commit with ui

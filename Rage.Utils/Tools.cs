@@ -12,7 +12,7 @@ namespace Rage.Utils
             {
                 case string a when a.Contains("Windows"):
                     return RunningCommand(filename, args, workingDirectory);
-                case string a when a.Contains("OSX"):
+                case string a when a.Contains("Darwin"):
                     return RunningCommand(filename, args, workingDirectory);
                 case string a when a.Contains("Linux"):
                     return RunningCommand(filename, args, workingDirectory);

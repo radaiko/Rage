@@ -4,6 +4,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Rage.Views.CreditsWindow"
-        Title="AvaloniaAppTemplate">
-  Welcome to Avalonia!
+        Title="Credits">
+  <ListBox Items="{Binding Credits}">
+    <ListBox.ItemTemplate>
+        <DataTemplate>
+            <Border CornerRadius="4" Padding="4">
+              <Expander>
+                <Expander.Header>
+                  <DockPanel>
+                    <TextBlock Text="{Binding Name}"/>
+                    <Button Content="Open Link" Command="{Binding $parent[Window].DataContext.OpenLink}" CommandParameter="{Binding Path}" DockPanel.Dock="Right" />
+                  </DockPanel>
+                </Expander.Header>
+                <Expander.Content>
+                  <TextBlock Text="{Binding License}" />
+                </Expander.Content>
+              </Expander>
+            </Border>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+</ListBox>
 </Window>

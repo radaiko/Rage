@@ -47,6 +47,10 @@ namespace Rage.ViewModels
 
         }
 
+        // WIP: open link command
+
+        // WIP: style window
+
         private string ExtractLicenseUrlFromNugetSite(string url) {
             var nugetUrlContent = (new WebClient()).DownloadString(url);
             var licenseUrl = nugetUrlContent.Split("ms-Icon ms-Icon--Certificate")[1].Split("<a href=\"")[1].Split("\"")[0];  

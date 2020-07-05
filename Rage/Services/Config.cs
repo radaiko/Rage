@@ -40,7 +40,7 @@ namespace Rage.Services
 
         #region parameters
         private ConfigModel configModel = new ConfigModel();
-        private string configPath = "settings.config";
+        private string configPath = "settings.json";
         #endregion
 
         #region constructor

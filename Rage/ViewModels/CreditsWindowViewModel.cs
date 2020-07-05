@@ -40,9 +40,6 @@ namespace Rage.ViewModels
                         Version = version,
                         License = license
                     };                 
-                    Debugger.Break();
-
-
                     Credits.Add(credit);
                 }
 
@@ -52,12 +49,9 @@ namespace Rage.ViewModels
 
         private string ExtractLicenseUrlFromNugetSite(string url) {
             var nugetUrlContent = (new WebClient()).DownloadString(url);
-            var licenseUrl = nugetUrlContent;
-            // WIP: extract License content
-            // find License:\r\n<a href=\"
-
-
-            return "";
+            var licenseUrl = nugetUrlContent.Split("ms-Icon ms-Icon--Certificate")[1].Split("<a href=\"")[1].Split("\"")[0];  
+            var licenseContent = (new WebClient()).DownloadString(licenseUrl);
+            return licenseContent;
 
         }
     }

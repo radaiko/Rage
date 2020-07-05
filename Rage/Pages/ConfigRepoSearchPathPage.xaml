@@ -4,5 +4,43 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Rage.Pages.ConfigRepoSearchPath" Background="#33363E" Foreground="#CCCCCC" FontSize="10">
-    Test
+    <Grid RowDefinitions="Auto,50">
+        <ListBox Grid.Row="0" Items="{Binding SearchFolders}" Background="#44474F" >
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Border>
+                    <Border.Styles>
+                        <Style Selector="Button">
+                            <Setter Property="Padding" Value="0 0 0 0"/>
+                            <Setter Property="Margin" Value="0 0 0 0"/>
+                            <Setter Property="Width" Value="50"/>
+                            <Setter Property="Height" Value="12"/>
+                            <Setter Property="FontSize" Value="8"/>
+                            <Setter Property="Background" Value="#44474F"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        </Style>
+                        <Style Selector="Border">
+                            <Setter Property="Padding" Value="0 0 0 0"/>
+                            <Setter Property="Margin" Value="0 0 0 0"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="BorderBrush" Value="#44474F"/>
+                            <Setter Property="CornerRadius" Value="0"/>
+                        </Style>
+                        <Style Selector="Border:pointerover">
+                            <Setter Property="BorderBrush" Value="#676c78"/>
+                        </Style>
+                    </Border.Styles> 
+                    <Grid ColumnDefinitions="*,80,50">
+                        <TextBox Grid.Column="0" Text="{Binding}" Watermark="Insert path or click '...'" />
+                        <Button Grid.Column="1" Content="..." Command="{Binding $parent[UserControl].DataContext.SelectFolderAsync}" CommandParameter="{Binding}" />
+                        <Button Grid.Column="2" Content="X" Command="{Binding $parent[UserControl].DataContext.DeleteFolder}" CommandParameter="{Binding}" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Grid.Row="1" Content="Add Folder" Command="{Binding $parent[UserControl].DataContext.AddFolder}"/>
+    </Grid>
 </UserControl>

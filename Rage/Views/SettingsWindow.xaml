@@ -7,19 +7,46 @@
         xmlns:vm="clr-namespace:Rage.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Rage.Views.SettingsWindow"
-        Title="Settings">
+        Title="Settings" Background="#44474F">
   <Window.DataTemplates>
     <DataTemplate DataType="{x:Type vm:ConfigRepoSearchPathViewModel}">
       <pages:ConfigRepoSearchPath/>
     </DataTemplate>
   </Window.DataTemplates> 
 
-  <Grid ColumnDefinitions="50,Auto">
-    <ListBox Grid.Column="0" Items="{Binding SettingsPageViewModels}">
+
+
+  <Grid ColumnDefinitions="Auto,*">
+    <ListBox Grid.Column="0" Items="{Binding SettingsPageViewModels}" Background="#44474F" >
       <ListBox.ItemTemplate>
         <DataTemplate>
-            <Border CornerRadius="4" Padding="4">
-              <Button Content="{Binding Name}" Command="{Binding $parent[Window].DataContext.SelectSetting}" CommandParameter="{Binding}" />
+            <Border>
+              <Border.Styles>
+                <Style Selector="Button">
+                  <Setter Property="Padding" Value="0 0 0 0"/>
+                  <Setter Property="Margin" Value="0 0 0 0"/>
+                  <Setter Property="Width" Value="50"/>
+                  <Setter Property="Height" Value="12"/>
+                  <Setter Property="FontSize" Value="8"/>
+                  <Setter Property="Background" Value="#44474F"/>
+                  <Setter Property="BorderThickness" Value="0"/>
+                  <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                  <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+                <Style Selector="Border">
+                  <Setter Property="Padding" Value="0 0 0 0"/>
+                  <Setter Property="Margin" Value="0 0 0 0"/>
+                  <Setter Property="BorderThickness" Value="1"/>
+                  <Setter Property="BorderBrush" Value="#44474F"/>
+                  <Setter Property="CornerRadius" Value="0"/>
+                </Style>
+                <Style Selector="Border:pointerover">
+                  <Setter Property="BorderBrush" Value="#676c78"/>
+                </Style>
+              </Border.Styles> 
+              <Button Content="{Binding Name}" 
+                      Command="{Binding $parent[Window].DataContext.SelectSettings}"
+                      CommandParameter="{Binding}" />
             </Border>
         </DataTemplate>
       </ListBox.ItemTemplate>

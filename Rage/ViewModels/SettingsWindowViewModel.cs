@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
-using Rage.Models;
 using Rage.Services;
 using ReactiveUI;
-using Serilog;
-using Serilog.Events;
 
 namespace Rage.ViewModels
 {
@@ -19,7 +13,7 @@ namespace Rage.ViewModels
         private int _selectedIndex;
 
 
-        public ObservableCollection<ViewModelBase> SettingsPageViewModels { get; set; }
+        public ObservableCollection<ViewModelBase> SettingsPageViewModels { get; set; } = new ObservableCollection<ViewModelBase>();
         public ViewModelBase CurrentSettingsPageViewModel
         {
             get { return _currentSettingsPageViewModel; }
@@ -39,6 +33,7 @@ namespace Rage.ViewModels
         {
             this.config = new Config();
             Initialize();
+            CurrentSettingsPageViewModel = SettingsPageViewModels[0];
            
         }
 
@@ -59,8 +54,8 @@ namespace Rage.ViewModels
 
 
         private void Initialize(){  
-            ConfigRepoSearchPathViewModel configRepoSearchPathViewModel = new ConfigRepoSearchPathViewModel("Repo Search Folders");
-            
+            // * Add new available Settings panel here
+            SettingsPageViewModels.Add(new ConfigRepoSearchPathViewModel("Repo Search Folders"));
 
         }
     }

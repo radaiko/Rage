@@ -4,11 +4,46 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Rage.Pages.BottomPage" Background="#33363E" Foreground="#CCCCCC" FontSize="10">
-  <Grid ColumnDefinitions="100,*,50">
-    <Button Grid.Column="0" Content="Show Log" Click="OpenLogWindow"/>
-    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-      <Border Background="#44474F" CornerRadius="3" Padding="2">
-        <TextBlock DockPanel.Dock="Right">v0.0.1</TextBlock>
+  <UserControl.Styles>
+    <Style Selector="Button">
+      <Setter Property="Padding" Value="0 0 0 0"/>
+      <Setter Property="Margin" Value="0 0 0 0"/>
+      <Setter Property="Width" Value="50"/>
+      <Setter Property="Height" Value="12"/>
+      <Setter Property="FontSize" Value="8"/>
+      <Setter Property="Background" Value="#44474F"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Border">
+      <Setter Property="Padding" Value="0 0 0 0"/>
+      <Setter Property="Margin" Value="5 0 0 0"/>
+      <Setter Property="BorderThickness" Value="2"/>
+      <Setter Property="BorderBrush" Value="#44474F"/>
+      <Setter Property="CornerRadius" Value="4"/>
+    </Style>
+    <Style Selector="Border:pointerover">
+      <Setter Property="BorderBrush" Value="#676c78"/>
+    </Style>
+  </UserControl.Styles> 
+
+  <Grid ColumnDefinitions="*,60">
+    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+      <Border>
+        <Button Content="Settings" Click="OpenSettings"/>
+      </Border>
+      <Border>
+        <Button Content="Log" Click="OpenLogWindow"/>
+      </Border>
+      <Border>
+        <Button Content="Credits" Click="OpenCreditsWindow"/>
+      </Border>
+    </StackPanel>
+    
+    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+      <Border>
+        <Button Content="v0.0.1" Click="OpenGithubPage"/>
       </Border>
     </StackPanel>
 

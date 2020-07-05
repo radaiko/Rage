@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -19,11 +21,28 @@ namespace Rage.Pages
             AvaloniaXamlLoader.Load(this);
         }
 
+        private void OpenSettings(object sender, RoutedEventArgs e){
+            var window = new SettingsWindow{
+                DataContext = new SettingsWindowViewModel(),
+            };
+            window.Show();
+        }
+
         private void OpenLogWindow(object sender, RoutedEventArgs e){
-            var logWindow = new LogWindow{
+            var window = new LogWindow{
                 DataContext = new LogWindowViewModel(),
             };
-            logWindow.Show();
+            window.Show();
+        }
+        private void OpenCreditsWindow(object sender, RoutedEventArgs e){
+            var window = new CreditsWindow{
+                DataContext = new CreditsWindowViewModel(),
+            };
+            window.Show();
+        }
+
+        private void OpenGithubPage(object sender, RoutedEventArgs e){
+            Utils.Tools.OpenUrl("https://github.com/radaiko/Rage");
         }
     }
 }

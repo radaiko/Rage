@@ -13,171 +13,114 @@
         TextBlock.FontSize="{DynamicResource FontSizeNormal}"
         Title="Rage">
         
-        <Window.DataTemplates>
-                <DataTemplate DataType="{x:Type vm:RepoPageViewModel}">
-                        <pages:RepoPage/>
-                </DataTemplate>
-        </Window.DataTemplates>  
+    <Window.DataTemplates>
+        <DataTemplate DataType="{x:Type vm:RepoPageViewModel}">
+            <pages:RepoPage/>
+        </DataTemplate>
+    </Window.DataTemplates>  
 
-        <Grid RowDefinitions="20,*,20" ColumnDefinitions="*">
-                <pages:MenuPage Grid.Row="0" IsVisible="True" DataContext="{Binding MenuPageViewModel}"/>
+    <Grid RowDefinitions="*,20" ColumnDefinitions="*">
+        <Grid Grid.Row="0" Grid.ColumnDefinitions="Auto,*">
+            <Grid Grid.Column="0" ColumnDefinitions="15,*" Name="ExpanderGrid">         
+                <Button ZIndex="1000" Content="Show Repos" 
+                        VerticalAlignment="Center" 
+                        Foreground="#D2D3D3" 
+                        Background="#272A30"
+                        BorderThickness="0"
+                        BorderBrush="#B6B6B6"
+                        FontSize="12" 
+                        Width="{Binding $parent[0].Bounds.Height}" 
+                        Click="SwitchExpanderStatus">
+                        <Button.RenderTransform>
+                        <RotateTransform Angle="-90" />
+                        </Button.RenderTransform>
+                </Button>
+                <Expander Name="OverviewExpander" Grid.Column="1" ExpandDirection="Right" Margin="-30,0,0,0">
+                        <Expander.Styles>
+                        <Style Selector="Expander">
+                                <Setter Property="Background" Value="#33363E"/>
+                        </Style>
+                        </Expander.Styles>
+                        <DockPanel>
+                        <DockPanel.Styles>
+                                <Style Selector="Button">
+                                <Setter Property="FontSize" Value="10"/>
+                                <Setter Property="Height" Value="20"/>
+                                <Setter Property="Background" Value="#282C34"/>
+                                <Setter Property="Foreground" Value="#D2D3D3"/>
+                                <Setter Property="BorderThickness" Value="0" />
+                                </Style>
+                        </DockPanel.Styles>
+                        <Button DockPanel.Dock="Bottom" Command="{Binding ScanRepos}">ReScan</Button>
 
-                <Grid Grid.Row="1" Grid.ColumnDefinitions="Auto,*">
-                        <Grid Grid.Column="0" ColumnDefinitions="15,*" Name="ExpanderGrid">         
-                                <Button ZIndex="1000" Content="Show Repos" 
-                                        VerticalAlignment="Center" 
-                                        Foreground="#D2D3D3" 
-                                        Background="#272A30"
-                                        BorderThickness="0"
-                                        BorderBrush="#B6B6B6"
-                                        FontSize="12" 
-                                        Width="{Binding $parent[0].Bounds.Height}" 
-                                        Click="SwitchExpanderStatus">
-                                        <Button.RenderTransform>
-                                        <RotateTransform Angle="-90" />
-                                        </Button.RenderTransform>
-                                </Button>
-                                <Expander Name="OverviewExpander" Grid.Column="1" ExpandDirection="Right" Margin="-30,0,0,0">
-                                        <Expander.Styles>
-                                        <Style Selector="Expander">
-                                                <Setter Property="Background" Value="#33363E"/>
-                                        </Style>
-                                        </Expander.Styles>
-                                        <DockPanel>
-                                        <DockPanel.Styles>
-                                                <Style Selector="Button">
-                                                <Setter Property="FontSize" Value="10"/>
-                                                <Setter Property="Height" Value="20"/>
-                                                <Setter Property="Background" Value="#282C34"/>
-                                                <Setter Property="Foreground" Value="#D2D3D3"/>
-                                                <Setter Property="BorderThickness" Value="0" />
-                                                </Style>
-                                        </DockPanel.Styles>
-                                        <Button DockPanel.Dock="Bottom" Command="{Binding ScanRepos}">ReScan</Button>
+                        <TreeView Items="{Binding RepoSearchFolders}" >
+                                <TreeView.DataTemplates>
+                                <TreeDataTemplate DataType="models:RepoSearchFolder" ItemsSource="{Binding Repos}">
+                                        <TextBlock Foreground="#D2D3D3" Text="{Binding Name}" />
+                                </TreeDataTemplate>
+                                <DataTemplate DataType="models:Repo">
+                                        <Button Command="{Binding $parent[Window].DataContext.OpenRepo}" CommandParameter="{Binding}" Content="{Binding FolderName}"/>
+                                </DataTemplate>    
+                                </TreeView.DataTemplates>
+                        </TreeView>
+                        </DockPanel>
+                </Expander>
+            </Grid>
+            <Grid Grid.Column="1" RowDefinitions="20,*">
+                    <TabStrip Grid.Row="0" Name="RepoTabs" Items="{Binding RepoPageViewModels}" SelectedIndex="{Binding SelectedIndex}">
+                            <TabStrip.Styles>
+                            <Style Selector="TabStrip">
+                                    <Setter Property="Background" Value="#1C1E23"/>
+                            </Style>
+                            <Style Selector="TabStrip WrapPanel">
+                                    <Setter Property="Background" Value="#282C34"/>
+                            </Style>
+                            <Style Selector="TabStripItem">
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="Height" Value="20"/>
+                                    <Setter Property="VerticalAlignment" Value="Top"/>
+                                    <Setter Property="Background" Value="#282C34"/>
+                                    <Setter Property="Foreground" Value="#D2D3D3"/>
+                                    <Setter Property="Margin" Value="0 0 0 0"/>
+                                    <Setter Property="Padding" Value="10 0" />
+                            </Style>
+                            <Style Selector="TabStripItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                    <Setter Property="Background" Value="#282C34"/>
+                            </Style>
 
-                                        <TreeView Items="{Binding RepoSearchFolders}" >
-                                                <TreeView.DataTemplates>
-                                                <TreeDataTemplate DataType="models:RepoSearchFolder" ItemsSource="{Binding Repos}">
-                                                        <TextBlock Foreground="#D2D3D3" Text="{Binding Name}" />
-                                                </TreeDataTemplate>
-                                                <DataTemplate DataType="models:Repo">
-                                                        <Button Command="{Binding $parent[Window].DataContext.OpenRepo}" CommandParameter="{Binding}" Content="{Binding FolderName}"/>
-                                                </DataTemplate>    
-                                                </TreeView.DataTemplates>
-                                        </TreeView>
-                                        </DockPanel>
-                                </Expander>
-                                
-                        </Grid>
-                        <Grid Grid.Column="1" RowDefinitions="20,*">
-                        <!-- <DockPanel Grid.Column="1" >
-                                <DockPanel.Styles>
-                                        <Style Selector="DockPanel">
-                                                <Setter Property="Background" Value="#1C1E23"/>
-                                        </Style>
-                                        <Style Selector="DockPanel WrapPanel">
-                                                <Setter Property="Background" Value="#282C34"/>
-                                        </Style>
-                                        <Style Selector="Button">
-                                                <Setter Property="FontSize" Value="12"/>
-                                                <Setter Property="Height" Value="20"/>
-                                                <Setter Property="VerticalAlignment" Value="Top"/>
-                                                <Setter Property="Background" Value="#282C34"/>
-                                                <Setter Property="Foreground" Value="#D2D3D3"/>
-                                                <Setter Property="Margin" Value="0 0 0 0"/>
-                                                <Setter Property="Padding" Value="10 0" />
-                                        </Style>
-                                        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                                                <Setter Property="Background" Value="#282C34"/>
-                                        </Style>
+                            <Style Selector="TabStripItem:focus">
+                                    <Setter Property="Foreground" Value="#D2D3D3"/>
+                                    <Setter Property="Margin" Value="0 0 0 0"/>
+                                    <Setter Property="Padding" Value="10 0"/>
+                            </Style>
+                            <Style Selector="TabStripItem:focus /template/ ContentPresenter#PART_ContentPresenter">
+                                    <Setter Property="Background" Value="#313640"/>
+                            </Style>
 
-                                        <Style Selector="Button:focus">
-                                                <Setter Property="Foreground" Value="#D2D3D3"/>
-                                                <Setter Property="Margin" Value="0 0 0 0"/>
-                                                <Setter Property="Padding" Value="10 0"/>
-                                        </Style>
-                                        <Style Selector="Button:focus /template/ ContentPresenter#PART_ContentPresenter">
-                                                <Setter Property="Background" Value="#313640"/>
-                                        </Style>
-
-                                        <Style Selector="Button:selected">
-                                                <Setter Property="Foreground" Value="#D2D3D3"/>
-                                                <Setter Property="Margin" Value="0 0 0 0"/>
-                                                <Setter Property="Padding" Value="10 0"/>
-                                        </Style>
-                                        <Style Selector="Button:selected /template/ ContentPresenter#PART_ContentPresenter">
-                                                <Setter Property="Background" Value="#313640"/>
-                                        </Style>
-                                </DockPanel.Styles>
-                                <StackPanel DockPanel.Dock="Top"  Orientation="Horizontal">
-                                        <ItemsControl  Items="{Binding RepoPageViewModels}">
-                                                <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                                <Button Content="{Binding Repo.FolderName}"
-                                                                        Command="{Binding DataContext.SelectRepo, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                                        CommandParameter="{Binding}"
-                                                                        Margin="2,5"/>
-                                                        </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                </StackPanel>
-                                
-                                <ContentControl Content="{Binding CurrentRepoPageViewModel}" />
-                        </DockPanel> -->
-                                <TabStrip Grid.Row="0" Name="RepoTabs" Items="{Binding RepoPageViewModels}" SelectedIndex="{Binding SelectedIndex}">
-                                        <TabStrip.Styles>
-                                        <Style Selector="TabStrip">
-                                                <Setter Property="Background" Value="#1C1E23"/>
-                                        </Style>
-                                        <Style Selector="TabStrip WrapPanel">
-                                                <Setter Property="Background" Value="#282C34"/>
-                                        </Style>
-                                        <Style Selector="TabStripItem">
-                                                <Setter Property="FontSize" Value="12"/>
-                                                <Setter Property="Height" Value="20"/>
-                                                <Setter Property="VerticalAlignment" Value="Top"/>
-                                                <Setter Property="Background" Value="#282C34"/>
-                                                <Setter Property="Foreground" Value="#D2D3D3"/>
-                                                <Setter Property="Margin" Value="0 0 0 0"/>
-                                                <Setter Property="Padding" Value="10 0" />
-                                        </Style>
-                                        <Style Selector="TabStripItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                                                <Setter Property="Background" Value="#282C34"/>
-                                        </Style>
-
-                                        <Style Selector="TabStripItem:focus">
-                                                <Setter Property="Foreground" Value="#D2D3D3"/>
-                                                <Setter Property="Margin" Value="0 0 0 0"/>
-                                                <Setter Property="Padding" Value="10 0"/>
-                                        </Style>
-                                        <Style Selector="TabStripItem:focus /template/ ContentPresenter#PART_ContentPresenter">
-                                                <Setter Property="Background" Value="#313640"/>
-                                        </Style>
-
-                                        <Style Selector="TabStripItem:selected">
-                                                <Setter Property="Foreground" Value="#D2D3D3"/>
-                                                <Setter Property="Margin" Value="0 0 0 0"/>
-                                                <Setter Property="Padding" Value="10 0"/>
-                                        </Style>
-                                        <Style Selector="TabStripItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-                                                <Setter Property="Background" Value="#313640"/>
-                                        </Style>
-                                        </TabStrip.Styles>
-                                        <TabStrip.ItemTemplate>
-                                        <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding Repo.FolderName}" />
-                                                <Button Background="{Binding $parent.Background}" FontSize="8" BorderThickness="0" Foreground="{Binding $parent[TabStripItem].Foreground}" 
-                                                        Command="{Binding $parent[Window].DataContext.CloseRepo}" CommandParameter="{Binding}>" Padding="10 0 0 0">
-                                                        X
-                                                        </Button>
-                                                </StackPanel>
-                                        </DataTemplate>
-                                        </TabStrip.ItemTemplate>
-                                </TabStrip> 
-                                <ContentControl Grid.Row="1" Content="{Binding CurrentRepoPageViewModel}" />
-                        </Grid>
-                </Grid>
-                <pages:BottomPage Grid.Row="2" IsVisible="{Binding $parent[2].DataContext.ShowBottomPanel}" DataContext="{Binding BottomPageViewModel}"/>
+                            <Style Selector="TabStripItem:selected">
+                                    <Setter Property="Foreground" Value="#D2D3D3"/>
+                                    <Setter Property="Margin" Value="0 0 0 0"/>
+                                    <Setter Property="Padding" Value="10 0"/>
+                            </Style>
+                            <Style Selector="TabStripItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+                                    <Setter Property="Background" Value="#313640"/>
+                            </Style>
+                            </TabStrip.Styles>
+                            <TabStrip.ItemTemplate>
+                            <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Repo.FolderName}" />
+                                    <Button Background="{Binding $parent.Background}" FontSize="8" BorderThickness="0" Foreground="{Binding $parent[TabStripItem].Foreground}" 
+                                            Command="{Binding $parent[Window].DataContext.CloseRepo}" CommandParameter="{Binding}>" Padding="10 0 0 0">
+                                            X
+                                            </Button>
+                                    </StackPanel>
+                            </DataTemplate>
+                            </TabStrip.ItemTemplate>
+                    </TabStrip> 
+                    <ContentControl Grid.Row="1" Content="{Binding CurrentRepoPageViewModel}" />
+            </Grid>
         </Grid>
+        <pages:BottomPage Grid.Row="1" IsVisible="{Binding $parent[2].DataContext.ShowBottomPanel}" DataContext="{Binding BottomPageViewModel}"/>
+    </Grid>
 </Window>

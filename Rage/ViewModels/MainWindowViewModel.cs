@@ -102,9 +102,12 @@ namespace Rage.ViewModels
             }
             foreach (var path in config.GetSearchFolders())
             {
-                RepoSearchFolder repoSearchFolder = new RepoSearchFolder(Path.GetFileName(path));
-                SearchDirectoryForRepo(ref repoSearchFolder, path);
-                RepoSearchFolders.Add(repoSearchFolder);
+                if (Directory.Exists(path))
+                {
+                    RepoSearchFolder repoSearchFolder = new RepoSearchFolder(Path.GetFileName(path));
+                    SearchDirectoryForRepo(ref repoSearchFolder, path);
+                    RepoSearchFolders.Add(repoSearchFolder);
+                }
             }
         }
 

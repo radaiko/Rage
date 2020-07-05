@@ -13,7 +13,7 @@ namespace Rage.Services
         public IEnumerable<string> GetSearchFolders() {
             if (configModel.SearchRepoPaths == null)
             {
-                return new [] {@"/home/radaiko/src/private", @"/home/radaiko/src/trumpf"};
+                return new [] {@"/home/radaiko/src/private", @"/home/radaiko/src/trumpf", @"/Users/radaiko/Documents/GitHub/Rage"};
             }
             return configModel.SearchRepoPaths;
         }

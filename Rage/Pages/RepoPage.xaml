@@ -18,8 +18,6 @@
   </UserControl.DataTemplates>
   <UserControl.Styles>
     <Style Selector="Button">
-      <!-- <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/> -->
-      <!-- <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}"/> -->
       <Setter Property="FontSize" Value="10"/>
       <Setter Property="Height" Value="15"/>
       <Setter Property="Background" Value="#33363F"/>
@@ -223,66 +221,43 @@
         </Expander>
       </StackPanel>
       <ContentControl Grid.Column="1" Content="{Binding $parent[UserControl].DataContext.MiddleSection}" Background="#1C1E23"/>
-      <!-- <TextBlock Grid.Column="1" Text="{Binding $parent[UserControl].DataContext.MiddleSection}" HorizontalAlignment="Stretch" TextAlignment="Left"/> -->
-      <StackPanel Grid.Column="2" Background="#33363F">
-        <Expander IsExpanded="True" MaxHeight="250" MinHeight="250">
-          <Expander.Header>
-            <TextBlock Text="{Binding Path=UnstagesFiles.Count, StringFormat='Unstaged Files: {0}'}" Foreground="#D2D3D3" Width="{Binding $parent[0].Bounds.Width}" />
-          </Expander.Header>
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-              <ItemsControl Items="{Binding UnstagesFiles}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                      <Grid ColumnDefinitions="10,*,50">
-                        <TextBlock Text="{Binding Status}" Grid.Column="0"/>
-                        <Button Content="{Binding FileName}"
-                                Command="{Binding $parent[UserControl].DataContext.SelectFile}"
-                                CommandParameter="{Binding}"
-                                Grid.Column="1"/>
-                        <Button Content="Stage"
-                                Command="{Binding $parent[UserControl].DataContext.StageFile}"
-                                CommandParameter="{Binding}"
-                                Classes="Stage"
-                                Grid.Column="2"/>
-                      </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-          </ScrollViewer>
-        </Expander>
-        <Expander IsExpanded="True" MaxHeight="250" MinHeight="250">
-          <Expander.Header>
-            <TextBlock Text="{Binding Path=StagedFiles.Count, StringFormat='Staged Files: {0}'}" Foreground="#D2D3D3" Width="{Binding $parent[0].Bounds.Width}" />
-          </Expander.Header>
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-              <ItemsControl Items="{Binding StagedFiles}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                          <Grid ColumnDefinitions="10,*,65">
-                            <TextBlock Text="{Binding Status}" Grid.Column="0"/>
-                            <Button Content="{Binding FileName}"
-                                    Command="{Binding $parent[UserControl].DataContext.SelectFile}"
-                                    CommandParameter="{Binding}"
-                                    Grid.Column="1"/>
-                            <Button Content="UnStage"
-                                    Command="{Binding $parent[UserControl].DataContext.UnStageFile}"
-                                    CommandParameter="{Binding}"
-                                    Classes="Stage"
-                                    Grid.Column="2"/>
-                          </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-          </ScrollViewer>
-        </Expander> 
-        <Expander Header="Commit Message" IsExpanded="True">
-          <StackPanel  Orientation="Vertical">
+      <Grid Grid.Column="2" RowDefinitions="20,*,100" Background="#33363F">
+        <Grid.Styles>
+          <Style Selector="CheckBox">
+            <Setter Property="RenderTransform">
+              <Setter.Value>
+                <ScaleTransform ScaleX="0.6" ScaleY="0.6"/>
+              </Setter.Value>
+            </Setter>
+          </Style>
+        </Grid.Styles>
+        <DockPanel Grid.Row="0">
+          <CheckBox DockPanel.Dock="Left" IsChecked="{Binding $parent[UserControl].DataContext.AreAllChecked}" />
+          <TextBlock Text="{Binding ChangedFiles.Count, StringFormat={}{0} changed files}} "/>
+        </DockPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+          <ItemsControl Items="{Binding ChangedFiles}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid ColumnDefinitions="20,*,10">
+                    <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}" />
+                    <Button Grid.Column="1" Content="{Binding FileName}"
+                            Command="{Binding $parent[UserControl].DataContext.SelectFile}"
+                            CommandParameter="{Binding}" />
+                    <TextBlock Grid.Column="2" DockPanel.Dock="Right" Text="{Binding Status}" />
+                  </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+        <Border Grid.Row="2" BorderThickness="1" CornerRadius="4" BorderBrush="#333333">
+          <StackPanel>
             <TextBox Watermark="Summary" Text="{Binding $parent[UserControl].DataContext.CommitSummary}" Background="#272A31" Name="CommitSummary"></TextBox>
             <TextBox Watermark="Description" Text="{Binding $parent[UserControl].DataContext.CommitMessage}" Background="#272A31" AcceptsReturn="True" TextWrapping="Wrap" Name="CommitDescription"></TextBox>
             <Button Content="Commit and Push" Command="{Binding $parent[UserControl].DataContext.OnCommit}" Name="Commit"/>
           </StackPanel>
-        </Expander> 
-      </StackPanel>
+        </Border>
+      </Grid>
     </Grid>
   </Grid>
 </UserControl>

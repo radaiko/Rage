@@ -16,6 +16,7 @@ namespace Rage.ViewModels
         private ViewModelBase _middleSection;
         private string _commitSummary;
         private string _commitMessage;
+        private bool _areAllChecked;
 
         public Repo Repo { get; set;}
         public string CommitSummary {
@@ -31,39 +32,42 @@ namespace Rage.ViewModels
             get { return _middleSection; }
             set { this.RaiseAndSetIfChanged(ref _middleSection, value); }
         }
+        public bool AreAllChecked
+        {
+            get { return _areAllChecked; }
+            set { this.RaiseAndSetIfChanged(ref _areAllChecked, value);}
+        }
+        
 
         public RepoPageViewModel(Repo repo)
         {
             Repo = repo;
             gitHandler = new GitHandler(repo.FullPath);
-
             ReadRepo();
         }
+
+
 
         #region buttons
         private void SelectLocalBranch(){
             Debugger.Break();
         }
 
-        private void StageFile(ChangedFile changedFile) {
-            TransferModel transferModel = gitHandler.StageFile(changedFile.FullPath);
-            if (transferModel.Successful)
-            {
-                ReadRepo();
-            }
-        }
+        // private void StageFile(ChangedFile changedFile) {
+        //     TransferModel transferModel = gitHandler.StageFile(changedFile.FullPath);
+        //     if (transferModel.Successful)
+        //     {
+        //         ReadRepo();
+        //     }
+        // }
 
-        private void UnStageFile(ChangedFile changedFile){
-            TransferModel transferModel = gitHandler.UnstageFile(changedFile.FullPath);
-            if (transferModel.Successful)
-            {
-                ReadRepo();
-            }
-            // Repo.UnstagesFiles.Add(changedFile);
-            // gitHandler.UnstageFile(changedFile.FullPath);
-            // Repo.StagedFiles.Remove(changedFile);
-
-        }
+        // private void UnStageFile(ChangedFile changedFile){
+        //     TransferModel transferModel = gitHandler.UnstageFile(changedFile.FullPath);
+        //     if (transferModel.Successful)
+        //     {
+        //         ReadRepo();
+        //     }
+        // }
         private void OnCommit(){
             List<string> filesToAdd = new List<string>();
             if (Repo.StagedFiles.Count == 0)
@@ -85,7 +89,7 @@ namespace Rage.ViewModels
 
         }
 
-         public void ManualPush(){
+        public void ManualPush(){
             TransferModel push = gitHandler.PushCommits();
             if (push.Successful)
             {
@@ -97,9 +101,9 @@ namespace Rage.ViewModels
 
         }
 
-        private void SelectFile(string filename){
-            MiddleSection = new DiffPageViewModel(gitHandler.GetDiffToLast(filename).Content); 
-        }
+        // private void SelectFile(string filename){
+        //     MiddleSection = new DiffPageViewModel(gitHandler.GetDiffToLast(filename).Content); 
+        // }
         #endregion
 
         private void CleanCommit(){
@@ -120,31 +124,33 @@ namespace Rage.ViewModels
             // TODO: read tags
 
             // Get changed files
-            if (Repo.UnstagesFiles != null)
-            {
-                Repo.UnstagesFiles.Clear();
-            } else
-            {
-                Repo.UnstagesFiles = new ObservableCollection<ChangedFile>();
-            }
-            foreach (var changedFile in UpdateUnstagedFiles())
-            {
-                Repo.UnstagesFiles.Add(changedFile);
-            }
+            // if (Repo.UnstagesFiles != null)
+            // {
+            //     Repo.UnstagesFiles.Clear();
+            // } else
+            // {
+            //     Repo.UnstagesFiles = new ObservableCollection<ChangedFile>();
+            // }
+            // foreach (var changedFile in UpdateUnstagedFiles())
+            // {
+            //     Repo.UnstagesFiles.Add(changedFile);
+            // }
 
-            // staged files
-            if (Repo.StagedFiles != null)
-            {
-                Repo.StagedFiles.Clear();
-            } else
-            {
-                Repo.StagedFiles = new ObservableCollection<ChangedFile>();
-            }
-            foreach (var changedFile in UpdateStagedFiles())
-            {
-                Repo.StagedFiles.Add(changedFile);
-            }
+            // // staged files
+            // if (Repo.StagedFiles != null)
+            // {
+            //     Repo.StagedFiles.Clear();
+            // } else
+            // {
+            //     Repo.StagedFiles = new ObservableCollection<ChangedFile>();
+            // }
+            // foreach (var changedFile in UpdateStagedFiles())
+            // {
+            //     Repo.StagedFiles.Add(changedFile);
+            // }
 
+            // Get changedFiles
+            Repo.ChangedFiles = GetChangedFiles();
 
             // Get graph
             Repo.RepoGraphAsString = gitHandler.GetGraphAsString().Content;
@@ -158,6 +164,9 @@ namespace Rage.ViewModels
         }
         private ObservableCollection<ChangedFile> UpdateStagedFiles(){
             return gitHandler.GetStagedFiles();
+        }
+        private ObservableCollection<ChangedFile> GetChangedFiles(){
+            return gitHandler.GetChangedFiles();
         }
     }
 }

@@ -80,6 +80,16 @@ namespace Rage.Services
 
             return stagedFiles;
         }
+        public ObservableCollection<ChangedFile> GetChangedFiles(){
+            ObservableCollection<ChangedFile> changedFiles = ListUnstagedFiles();
+            foreach (var stagedFile in ListStagedFiles())
+            {
+                var changedFile = stagedFile;
+                changedFile.IsChecked = true;
+                changedFiles.Add(changedFile);
+            }
+            return changedFiles;
+        }
 
         public TransferModel GetDiffToLast(string filepath){
             return DiffFile(filepath);

@@ -13,6 +13,7 @@ namespace Rage.Models
         public string RepoGraphAsString { get; set; }
         public ObservableCollection<ChangedFile> UnstagesFiles { get; set; }
         public ObservableCollection<ChangedFile> StagedFiles { get; set; } = new ObservableCollection<ChangedFile>();
+        public ObservableCollection<ChangedFile> ChangedFiles { get; set; } = new ObservableCollection<ChangedFile>();
 
 
         public enum FileStatus

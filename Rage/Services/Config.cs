@@ -9,46 +9,58 @@ namespace Rage.Services
 {
     public class Config{
 
+        #region Properties
+        private ConfigModel _configModel;
+        private ConfigModel ConfigModel
+        {
+            get { 
+                _configModel = ReadConfigFile();
+                return _configModel; 
+                }
+            set { 
+                _configModel = value;
+                SaveConfigFile();
+                }
+        }
+        
+        #endregion
+
+        
         #region public interface
+        // * ---- GET ----
+        // ! always set whole configModel to this.ConfigModel (autoSave)
         public IEnumerable<string> GetSearchFolders() {
-            if (configModel.SearchRepoPaths == null)
-            {
-                return new [] {@"/home/radaiko/src/private", @"/home/radaiko/src/trumpf", @"/Users/radaiko/Documents/GitHub"};
-            }
-            return configModel.SearchRepoPaths;
+            return ConfigModel.SearchRepoPaths;
         }
-
-        public bool SetSearchFolders(IEnumerable<string> searchRepoPaths) {
-            configModel.SearchRepoPaths = searchRepoPaths;
-            return SaveConfigFile();
-        }
-
-        public bool SetOpenRepos(IEnumerable<string> openRepos){
-            configModel.OpenRepos = openRepos;
-            return SaveConfigFile();
-        }
-
         public IEnumerable<string> GetOpenRepos() {
-            if (configModel.OpenRepos == null)
+            if (ConfigModel.OpenRepos == null)
             {
                 return Enumerable.Empty<string>();
             }
-            return configModel.OpenRepos;
+            return ConfigModel.OpenRepos;
         }
+        // * ------------------------------------------------------
+        
+        // * ---- SET -----
+        // ! always set whole configModel to this.ConfigModel (autoSave)
+        public void SetSearchFolders(IEnumerable<string> searchRepoPaths) {
+            ConfigModel configModel = _configModel;
+            configModel.SearchRepoPaths = searchRepoPaths;
+            this.ConfigModel = configModel;
+        }
+
+        public void SetOpenRepos(IEnumerable<string> openRepos){
+            ConfigModel configModel = _configModel;
+            configModel.OpenRepos = openRepos;
+            this.ConfigModel = configModel;
+        }
+        // * ------------------------------------------------------
+
         #endregion
 
 
         #region parameters
-        private ConfigModel configModel = new ConfigModel();
         private string configPath = "settings.json";
-        #endregion
-
-        #region constructor
-        public Config()
-        {
-            configModel = ReadConfigFile();
-            
-        }
         #endregion
 
         #region private
@@ -65,7 +77,7 @@ namespace Rage.Services
         private bool SaveConfigFile(){
             try
             {
-                File.WriteAllText(configPath, JsonSerializer.Serialize(configModel));
+                File.WriteAllText(configPath, JsonSerializer.Serialize(this._configModel));
                 return true;
             }
             catch (System.Exception e)

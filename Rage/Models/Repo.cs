@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Rage.Models
@@ -11,8 +12,6 @@ namespace Rage.Models
         public ObservableCollection<Branch> RemoteBranches { get; set; }
         public ObservableCollection<Tag> Tags { get; set; }
         public string RepoGraphAsString { get; set; }
-        public ObservableCollection<ChangedFile> UnstagesFiles { get; set; }
-        public ObservableCollection<ChangedFile> StagedFiles { get; set; } = new ObservableCollection<ChangedFile>();
         public ObservableCollection<ChangedFile> ChangedFiles { get; set; } = new ObservableCollection<ChangedFile>();
 
 
@@ -23,6 +22,15 @@ namespace Rage.Models
             U, // untracked
             A, // added
 
+        }
+
+        public List<string> GetAllChangedFilesPaths(){
+            List<string> returnValue = new List<string>();
+            foreach (var changedFile in this.ChangedFiles)
+            {
+                returnValue.Add(changedFile.FullPath);
+            }
+            return returnValue;
         }
     }
     

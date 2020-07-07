@@ -102,9 +102,10 @@ namespace Rage.ViewModels
             if (commitChanges.Successful)
             {
                 CleanCommit();
-                ReadRepo();
                 if(IsAutoPushChecked){
                     ManualPush();
+                } else {
+                    ReadRepo();
                 }
             } else
             {

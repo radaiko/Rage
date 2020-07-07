@@ -13,17 +13,24 @@ namespace Rage.ViewModels
 
     public class RepoPageViewModel : ViewModelBase
     {
+        // -----------------------
+        // ---- Parameters ----
+        #region 
         private GitHandler gitHandler;
-        private ViewModelBase _middleSection;
-        private string _commitSummary;
-        private string _commitMessage;
-        private bool _areAllChecked;
+        #endregion
+        // -----------------------
 
+        // -----------------------
+        // ---- Properties ----
+        #region 
         public Repo Repo { get; set;}
+        private string _commitSummary;
         public string CommitSummary {
             get { return _commitSummary; }
             set { this.RaiseAndSetIfChanged(ref _commitSummary, value); }
         }
+        private ViewModelBase _middleSection;
+        private string _commitMessage;
         public string CommitMessage {
             get { return _commitMessage; }
             set { this.RaiseAndSetIfChanged(ref _commitMessage, value); }
@@ -33,26 +40,46 @@ namespace Rage.ViewModels
             get { return _middleSection; }
             set { this.RaiseAndSetIfChanged(ref _middleSection, value); }
         }
+        private bool _areAllChecked;
         public bool AreAllChecked
         {
             get { return _areAllChecked; }
             set { this.RaiseAndSetIfChanged(ref _areAllChecked, value);}
         }
+        private bool _isAutoPushChecked;
+        public bool IsAutoPushChecked
+        {
+            get { return _isAutoPushChecked; }
+            set { this.RaiseAndSetIfChanged(ref _isAutoPushChecked, value);  
+            if(value) { this.CommitButtonText = "Commit and Push";} else { this.CommitButtonText = "Commit"; }}
+        }
+        private string _commitButtonText = "Commit";
+        public string CommitButtonText
+        {
+            get { return _commitButtonText; }
+            set { this.RaiseAndSetIfChanged(ref _commitButtonText, value); }
+        }
+        
+        #endregion
+        // -----------------------
         
 
         // -----------------------
         // ---- Constructor ----
+        #region 
         public RepoPageViewModel(Repo repo)
         {
             Repo = repo;
             gitHandler = new GitHandler(repo.FullPath);
             ReadRepo();
         }
+        #endregion
         // -----------------------
 
 
-
-        #region buttons
+        // -----------------------
+        // ---- Buttons ----
+        #region 
         private void SelectLocalBranch(){
             Debugger.Break();
         }
@@ -75,7 +102,10 @@ namespace Rage.ViewModels
             if (commitChanges.Successful)
             {
                 CleanCommit();
-                //ManualPush();
+                ReadRepo();
+                if(IsAutoPushChecked){
+                    ManualPush();
+                }
             } else
             {
                 Log.Error("Unable to commit. Error: " + commitChanges.Content);
@@ -99,8 +129,12 @@ namespace Rage.ViewModels
             MiddleSection = new DiffPageViewModel(gitHandler.GetDiffToLast(filename).Content); 
         }
         #endregion
+        // -----------------------
 
 
+        // -----------------------
+        // ---- Methods ----
+        #region 
         private void CleanCommit(){
             CommitSummary = "";
             CommitMessage = "";
@@ -142,5 +176,7 @@ namespace Rage.ViewModels
         private ObservableCollection<ChangedFile> GetChangedFiles(){
             return gitHandler.GetChangedFiles();
         }
+        #endregion
+        // -----------------------
     }
 }

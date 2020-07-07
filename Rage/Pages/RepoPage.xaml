@@ -252,9 +252,10 @@
         </ScrollViewer>
         <Border Grid.Row="2" BorderThickness="1" CornerRadius="4" BorderBrush="#333333">
           <StackPanel>
+            <CheckBox IsChecked="{Binding $parent[UserControl].DataContext.IsAutoPushChecked}" Content="Push on commit" />
             <TextBox Watermark="Summary" Text="{Binding $parent[UserControl].DataContext.CommitSummary}" Background="#272A31" Name="CommitSummary"></TextBox>
             <TextBox Watermark="Description" Text="{Binding $parent[UserControl].DataContext.CommitMessage}" Background="#272A31" AcceptsReturn="True" TextWrapping="Wrap" Name="CommitDescription"></TextBox>
-            <Button Content="Commit and Push" Command="{Binding $parent[UserControl].DataContext.OnCommit}" Name="Commit"/>
+            <Button Content="{Binding $parent[UserControl].DataContext.CommitButtonText}" Command="{Binding $parent[UserControl].DataContext.OnCommit}" Name="Commit"/>
           </StackPanel>
         </Border>
       </Grid>
